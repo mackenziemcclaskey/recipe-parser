@@ -18,7 +18,7 @@ const parse = (recipeString) => {
   const noQuantity = ingredientLine.replace(quantity, "").trim();
   quantity = convert.convertFromFraction(quantity);
 
-  const { unit, shorthand } = getUnit(noQuantity);
+  const { unit, shorthand } = getUnit(noQuantity.split(' ')[0]);
 
   const ingredient = noQuantity.replace(shorthand, "").trim();
 
