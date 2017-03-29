@@ -1,0 +1,19 @@
+{
+  "name": "recipe-parser",
+  "version": "1.0.0",
+  "description": "Natural language parser for recipes and ingredient lists",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mfernandez-rally/recipe-parser.git"
+  },
+  "author": "Mackenzie Fernandez <MackenzieLFernandez@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mfernandez-rally/recipe-parser/issues"
+  },
+  "homepage": "https://github.com/mfernandez-rally/recipe-parser#readme"
+}
