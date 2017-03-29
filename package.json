@@ -4,7 +4,8 @@
   "description": "Natural language parser for recipes and ingredient lists",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha test/index.test.js -w"
+    "test": "mocha test/index.test.js -w",
+    "test:ci": "mocha test/index.test.js"
   },
   "repository": {
     "type": "git",
