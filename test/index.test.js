@@ -40,27 +40,27 @@ describe('recipe parser', () => {
     it('of "1 pound water"', () => {
       expect(parse('1 pound water').unit).to.equal('pound');
     });
-    // it('of "1 ounce water"', () => {
-    //   expect(parse('1 ounce water').unit).to.equal('ounce');
-    // });
-    // it('of "1 pint water"', () => {
-    //   expect(parse('1 pint water').unit).to.equal('pint');
-    // });
-    // it('of "1 quart water"', () => {
-    //   expect(parse('1 quart water').unit).to.equal('quart');
-    // });
-    // it('of "1 whole onion"', () => {
-    //   expect(parse('1 whole onion').unit).to.equal('whole');
-    // });
-    // it('of "1 large onion"', () => {
-    //   expect(parse('1 large onion').unit).to.equal('large');
-    // });
-    // it('of "1 clove garlic"', () => {
-    //   expect(parse('1 clove garlic').unit).to.equal('clove');
-    // });
-    // it('of "1 bag garlic"', () => {
-    //   expect(parse('1 bag garlic').unit).to.equal('bag');
-    // });
+    it('of "1 ounce water"', () => {
+      expect(parse('1 ounce water').unit).to.equal('ounce');
+    });
+    it('of "1 pint water"', () => {
+      expect(parse('1 pint water').unit).to.equal('pint');
+    });
+    it('of "1 quart water"', () => {
+      expect(parse('1 quart water').unit).to.equal('quart');
+    });
+    it('of "1 whole onion"', () => {
+      expect(parse('1 whole onion').unit).to.equal('whole');
+    });
+    it('of "1 large onion"', () => {
+      expect(parse('1 large onion').unit).to.equal('large');
+    });
+    it('of "1 clove garlic"', () => {
+      expect(parse('1 clove garlic').unit).to.equal('clove');
+    });
+    it('of "1 bag garlic"', () => {
+      expect(parse('1 bag garlic').unit).to.equal('bag');
+    });
   });
 
   // it('translates unit when no unit provided', () => {
@@ -106,9 +106,5 @@ describe('recipe parser', () => {
   //   it('"1 teaspoon milk"', () => {
   //     expect(parse('1 teaspoon milk').ingredient).to.equal('milk');
   //   });
-  // });
-
-  // it('can handle units like cloves', () => {
-  //   expect(parse('1 clove garlic').unit).to.equal('clove');
   // });
 });

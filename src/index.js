@@ -3,9 +3,9 @@ const convert = require('./convert');
 
 const getUnit = (string) => {
   for (unit in units) {
-    if (string.match(unit)) return {unit, unit};
+    if (string === unit) return {unit, unit};
     for (shorthand of units[unit]) {
-      if (string.match(shorthand)) return {unit, shorthand};
+      if (string === shorthand) return {unit, shorthand};
     }
   }
   return null;
