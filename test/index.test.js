@@ -25,20 +25,11 @@ describe('recipe parser', () => {
   });
 
   describe('translates the literal units', () => {
-    it('of "1 teaspoon water"', () => {
-      expect(parse('1 teaspoon water').unit).to.equal('teaspoon');
-    });
-    it('of "1 tablespoon water"', () => {
-      expect(parse('1 tablespoon water').unit).to.equal('tablespoon');
-    });
     it('of "1 cup water"', () => {
       expect(parse('1 cup water').unit).to.equal('cup');
     });
     it('of "1 gallon water"', () => {
       expect(parse('1 gallon water').unit).to.equal('gallon');
-    });
-    it('of "1 pound water"', () => {
-      expect(parse('1 pound water').unit).to.equal('pound');
     });
     it('of "1 ounce water"', () => {
       expect(parse('1 ounce water').unit).to.equal('ounce');
@@ -46,14 +37,38 @@ describe('recipe parser', () => {
     it('of "1 pint water"', () => {
       expect(parse('1 pint water').unit).to.equal('pint');
     });
+    it('of "1 pound water"', () => {
+      expect(parse('1 pound water').unit).to.equal('pound');
+    });
     it('of "1 quart water"', () => {
       expect(parse('1 quart water').unit).to.equal('quart');
     });
-    it('of "1 whole onion"', () => {
-      expect(parse('1 whole onion').unit).to.equal('whole');
+    it('of "1 tablespoon water"', () => {
+      expect(parse('1 tablespoon water').unit).to.equal('tablespoon');
+    });
+    it('of "1 teaspoon water"', () => {
+      expect(parse('1 teaspoon water').unit).to.equal('teaspoon');
+    });
+    it('of "1 gram water"', () => {
+      expect(parse('1 gram water').unit).to.equal('gram');
+    });
+    it('of "1 kilogram water"', () => {
+      expect(parse('1 kilogram water').unit).to.equal('kilogram');
+    });
+    it('of "1 liter water"', () => {
+      expect(parse('1 liter water').unit).to.equal('liter');
+    });
+    it('of "1 milligram water"', () => {
+      expect(parse('1 milligram water').unit).to.equal('milligram');
+    });
+    it('of "1 milliliter water"', () => {
+      expect(parse('1 milliliter water').unit).to.equal('milliliter');
     });
     it('of "1 large onion"', () => {
       expect(parse('1 large onion').unit).to.equal('large');
+    });
+    it('of "1 whole onion"', () => {
+      expect(parse('1 whole onion').unit).to.equal('whole');
     });
     it('of "1 clove garlic"', () => {
       expect(parse('1 clove garlic').unit).to.equal('clove');
@@ -61,50 +76,89 @@ describe('recipe parser', () => {
     it('of "1 bag garlic"', () => {
       expect(parse('1 bag garlic').unit).to.equal('bag');
     });
+    it('"1 pinch water"', () => {
+      expect(parse('1 pinch salt').unit).to.equal('pinch');      
+    });
   });
 
-  // it('translates unit when no unit provided', () => {
-  //   expect(parse('1 tortilla').unit).to.equal(null);
-  // });
+  it('translates unit when no unit provided', () => {
+    expect(parse('1 tortilla').unit).to.equal(null);
+  });
 
-  describe('translates the abbreviated units', () => {
-    it('of "1 teaspoon water"', () => {
-      expect(parse('1 tsp water').unit).to.equal('teaspoon');
-      expect(parse('1 tspn water').unit).to.equal('teaspoon');
-      expect(parse('1 t water').unit).to.equal('teaspoon');
+  describe('translates the abbreviated units of', () => {
+    it('"1 cup water"', () => {
+      expect(parse('1 c water').unit).to.equal('cup');
+      expect(parse('2 c. water').unit).to.equal('cup');
+      expect(parse('2 cups water').unit).to.equal('cup');
     });
-    it('of "1 tablespoon water"', () => {
+    it('"1 gallon water"', () => {
+      expect(parse('1 gal water').unit).to.equal('gallon');
+      expect(parse('1 gallons water').unit).to.equal('gallon');
+    });
+    it('"1 ounce water"', () => {
+      expect(parse('1 oz water').unit).to.equal('ounce');
+      expect(parse('1 oz. water').unit).to.equal('ounce');
+      expect(parse('2 ounces water').unit).to.equal('ounce');
+    });
+    it('"1 pint water"', () => {
+      expect(parse('1 pt water').unit).to.equal('pint');
+      expect(parse('2 pts water').unit).to.equal('pint');
+      expect(parse('1 pt. water').unit).to.equal('pint');
+    });
+    it('"1 pound water"', () => {
+      expect(parse('1 lb water').unit).to.equal('pound');
+      expect(parse('1 lb. water').unit).to.equal('pound');
+      expect(parse('2 lbs water').unit).to.equal('pound');
+    });
+    it('"1 quart water"', () => {
+      expect(parse('1 qt water').unit).to.equal('quart');
+      expect(parse('1 qt. water').unit).to.equal('quart');
+      expect(parse('1 qts water').unit).to.equal('quart');
+    });
+    it('"1 tablespoon water"', () => {
       expect(parse('1 T water').unit).to.equal('tablespoon');
+      expect(parse('1 T. water').unit).to.equal('tablespoon');
       expect(parse('1 tbs water').unit).to.equal('tablespoon');
       expect(parse('1 tbsp water').unit).to.equal('tablespoon');
       expect(parse('1 tbspn water').unit).to.equal('tablespoon');
     });
-    it('of "1 cup water"', () => {
-      expect(parse('1 c water').unit).to.equal('cup');
+    it('"1 teaspoon water"', () => {
+      expect(parse('1 tsp water').unit).to.equal('teaspoon');
+      expect(parse('1 tspn water').unit).to.equal('teaspoon');
+      expect(parse('1 t water').unit).to.equal('teaspoon');
+      expect(parse('1 t. water').unit).to.equal('teaspoon');
     });
-    it('of "1 gallon water"', () => {
-      expect(parse('1 gal water').unit).to.equal('gallon');
+    it('"1 gram water"', () => {
+      expect(parse('1 g water').unit).to.equal('gram');      
+      expect(parse('1 g. water').unit).to.equal('gram');      
     });
-    it('of "1 pound water"', () => {
-      expect(parse('1 lb water').unit).to.equal('pound');
+    it('"1 kilogram water"', () => {
+      expect(parse('1 kg water').unit).to.equal('kilogram');      
+      expect(parse('1 kg. water').unit).to.equal('kilogram');      
     });
-    it('of "1 ounce water"', () => {
-      expect(parse('1 oz water').unit).to.equal('ounce');
+    it('"1 liter water"', () => {
+      expect(parse('1 l water').unit).to.equal('liter');      
+      expect(parse('1 l. water').unit).to.equal('liter');      
     });
-    it('of "1 pint water"', () => {
-      expect(parse('1 pt water').unit).to.equal('pint');
+    it('"1 milligram water"', () => {
+      expect(parse('1 mg water').unit).to.equal('milligram');      
+      expect(parse('1 mg. water').unit).to.equal('milligram');      
     });
-    it('of "1 quart water"', () => {
-      expect(parse('1 qt water').unit).to.equal('quart');
+    it('"1 milliliter water"', () => {
+      expect(parse('1 ml water').unit).to.equal('milliliter');      
+      expect(parse('1 ml. water').unit).to.equal('milliliter');      
+    });
+    it('"1 pinch water"', () => {
+      expect(parse('2 pinches salt').unit).to.equal('pinch');      
     });
   });
 
-  // describe('translates the ingredient of', () => {
-  //   it('"1 teaspoon water"', () => {
-  //     expect(parse('1 teaspoon water').ingredient).to.equal('water');
-  //   });
-  //   it('"1 teaspoon milk"', () => {
-  //     expect(parse('1 teaspoon milk').ingredient).to.equal('milk');
-  //   });
-  // });
+  describe('translates the ingredient of', () => {
+    it('"1 teaspoon water"', () => {
+      expect(parse('1 teaspoon water').ingredient).to.equal('water');
+    });
+    it('"1 teaspoon milk"', () => {
+      expect(parse('1 teaspoon milk').ingredient).to.equal('milk');
+    });
+  });
 });
