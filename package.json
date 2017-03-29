@@ -1,5 +1,5 @@
 {
-  "name": "recipe-parser",
+  "name": "recipe-ingredient-parser",
   "version": "1.0.0",
   "description": "Natural language parser for recipes and ingredient lists",
   "main": "src/index.js",
