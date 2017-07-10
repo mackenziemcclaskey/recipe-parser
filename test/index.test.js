@@ -104,16 +104,19 @@ describe('recipe parser', () => {
       expect(parse('1 pt water').unit).to.equal('pint');
       expect(parse('2 pts water').unit).to.equal('pint');
       expect(parse('1 pt. water').unit).to.equal('pint');
+      expect(parse('2 pints water').unit).to.equal('pint');
     });
     it('"1 pound water"', () => {
       expect(parse('1 lb water').unit).to.equal('pound');
       expect(parse('1 lb. water').unit).to.equal('pound');
       expect(parse('2 lbs water').unit).to.equal('pound');
+      expect(parse('2 pounds water').unit).to.equal('pound');
     });
     it('"1 quart water"', () => {
       expect(parse('1 qt water').unit).to.equal('quart');
       expect(parse('1 qt. water').unit).to.equal('quart');
       expect(parse('1 qts water').unit).to.equal('quart');
+      expect(parse('1 quarts water').unit).to.equal('quart');
     });
     it('"1 tablespoon water"', () => {
       expect(parse('1 T water').unit).to.equal('tablespoon');
@@ -121,32 +124,39 @@ describe('recipe parser', () => {
       expect(parse('1 tbs water').unit).to.equal('tablespoon');
       expect(parse('1 tbsp water').unit).to.equal('tablespoon');
       expect(parse('1 tbspn water').unit).to.equal('tablespoon');
+      expect(parse('2 tablespoons water').unit).to.equal('tablespoon');
     });
     it('"1 teaspoon water"', () => {
       expect(parse('1 tsp water').unit).to.equal('teaspoon');
       expect(parse('1 tspn water').unit).to.equal('teaspoon');
       expect(parse('1 t water').unit).to.equal('teaspoon');
       expect(parse('1 t. water').unit).to.equal('teaspoon');
+      expect(parse('2 teaspoons water').unit).to.equal('teaspoon');
     });
     it('"1 gram water"', () => {
       expect(parse('1 g water').unit).to.equal('gram');      
       expect(parse('1 g. water').unit).to.equal('gram');      
+      expect(parse('2 grams water').unit).to.equal('gram');      
     });
     it('"1 kilogram water"', () => {
       expect(parse('1 kg water').unit).to.equal('kilogram');      
       expect(parse('1 kg. water').unit).to.equal('kilogram');      
+      expect(parse('2 kilograms water').unit).to.equal('kilogram');      
     });
     it('"1 liter water"', () => {
       expect(parse('1 l water').unit).to.equal('liter');      
       expect(parse('1 l. water').unit).to.equal('liter');      
+      expect(parse('2 liters water').unit).to.equal('liter');      
     });
     it('"1 milligram water"', () => {
       expect(parse('1 mg water').unit).to.equal('milligram');      
       expect(parse('1 mg. water').unit).to.equal('milligram');      
+      expect(parse('1 milligrams water').unit).to.equal('milligram');      
     });
     it('"1 milliliter water"', () => {
       expect(parse('1 ml water').unit).to.equal('milliliter');      
       expect(parse('1 ml. water').unit).to.equal('milliliter');      
+      expect(parse('1 milliliters water').unit).to.equal('milliliter');      
     });
     it('"1 pinch water"', () => {
       expect(parse('2 pinches salt').unit).to.equal('pinch');      
