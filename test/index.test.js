@@ -22,6 +22,38 @@ describe('recipe parser', () => {
     it('of "10 1/2 teaspoon water"', () => {
       expect(parse('10 1/2 teaspoon water').quantity).to.equal('10.5');
     });
+
+    describe('of unicode fractions', () => {
+      const unicodeAmounts = ['¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞'];
+      const unicodeExpectedAmounts = ['0.25', '0.5', '0.75', '0.142', '0.111', '0.1', '0.333', '0.666', '0.2', '0.4', '0.6', '0.8', '0.166', '0.833', '0.125', '0.375', '0.625', '0.875'];      
+
+      for (let u = 0; u < unicodeAmounts.length; u++) {
+        let element = unicodeAmounts[u];
+        let expectedAmount = unicodeExpectedAmounts[u];
+        it(`${element} to ${expectedAmount}`, () => {
+          expect(parse(`${element} teaspoon water`).quantity).to.equal(expectedAmount);
+        });
+      }
+
+      const mixedValues = ['1¼', '2½', '3¾', '4⅐', '5⅑', '6⅒', '7⅓', '8⅔', '9⅕', '10⅖', '11⅗', '12⅘', '13⅙', '14⅚', '15⅛', '16⅜', '17⅝', '18⅞'];
+      const mixedExpectedValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'];
+
+      for (let u = 0; u < mixedValues.length; u++) {
+        let element = mixedValues[u];
+        let expectedAmount = (Number(mixedExpectedValues[u]) + Number(unicodeExpectedAmounts[u])).toString();
+        it(`${element} to ${expectedAmount}`, () => {
+          expect(parse(`${element} teaspoon water`).quantity).to.equal(expectedAmount);
+        });
+      }  
+    });
+
+    it('of unicode fractions', () => {
+      const unicodeAmounts = ['¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞'];
+    });
+
+    it('of unicode and numeric values', () => {
+      const mixedValues = ['1¼', '2½', '3¾', '4⅐', '5⅑', '6⅒', '7⅓', '8⅔', '9⅕', '10⅖', '11⅗', '12⅘', '13⅙', '14⅚', '15⅛', '16⅜', '17⅝', '18⅞'];
+    });
   });
 
   describe('translates the literal units', () => {

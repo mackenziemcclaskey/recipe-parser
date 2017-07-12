@@ -14,8 +14,8 @@ const getUnit = (string) => {
 const parse = (recipeString) => {
   const ingredientLine = recipeString.trim();
 
-  let quantity = ingredientLine.match(/^(\d+\/\d+)|(\d+\s\d+\/\d+)|(\d+\-\d+)|\d+/g)[0];
-  const noQuantity = ingredientLine.replace(quantity, '').trim();
+  let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine);
+
   quantity = convert.convertFromFraction(quantity);
 
   const { unit, shorthand } = getUnit(noQuantity.split(' ')[0]);
