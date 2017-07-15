@@ -46,14 +46,6 @@ describe('recipe parser', () => {
         });
       }  
     });
-
-    it('of unicode fractions', () => {
-      const unicodeAmounts = ['¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞'];
-    });
-
-    it('of unicode and numeric values', () => {
-      const mixedValues = ['1¼', '2½', '3¾', '4⅐', '5⅑', '6⅒', '7⅓', '8⅔', '9⅕', '10⅖', '11⅗', '12⅘', '13⅙', '14⅚', '15⅛', '16⅜', '17⅝', '18⅞'];
-    });
   });
 
   describe('translates the literal units', () => {
@@ -114,7 +106,19 @@ describe('recipe parser', () => {
   });
 
   it('translates unit when no unit provided', () => {
-    expect(parse('1 tortilla').unit).to.equal(null);
+    expect(parse('1 tortilla')).to.deep.equal({
+      unit: null,
+      ingredient: 'tortilla',
+      quantity: '1'
+    });
+  });
+
+  it('doesn\'t explode when no unit and no quantity provided', () => {
+    expect(parse('powdered sugar')).to.deep.equal({
+      unit: null,
+      ingredient: 'powdered sugar',
+      quantity: null
+    });
   });
 
   describe('translates the abbreviated units of', () => {
