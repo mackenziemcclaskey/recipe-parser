@@ -5,7 +5,7 @@ module.exports = {
   'pint': ['pt', 'pts', 'pt.', 'pints'],
   'pound': ['lb', 'lb.', 'lbs', 'pounds'],
   'quart': ['qt', 'qt.', 'qts', 'quarts'],
-  'tablespoon': ['tbs', 'tbsp', 'tbspn', 'T', 'T.', 'tablespoons'],
+  'tablespoon': ['tbs', 'tbsp', 'tbspn', 'T', 'T.', 'tablespoons', 'Tablespoons', 'Tablespoon'],
   'teaspoon': ['tsp', 'tspn', 't', 't.', 'teaspoons'],
   'gram': ['g', 'g.', 'grams'],
   'kilogram': ['kg', 'kg.', 'kilograms'],
@@ -16,5 +16,6 @@ module.exports = {
   'whole': [],
   'clove': [],
   'bag': [],
-  'pinch': ['pinches']
+  'pinch': ['pinches'],
+  'can': []
 }

@@ -50,7 +50,7 @@ const findQuantityAndConvertIfUnicode = (string) => {
 
     return [`${numericPart} ${unicodeObj[unicodePart]}`, string.replace(string.match(unicodeFractionRegex)[0], '').trim()];
   } else if (string.match(numericAndFractionRegex)) {
-    return [string.match(numericAndFractionRegex)[0], string.replace(string.match(numericAndFractionRegex)[0], '').trim()];
+    return [string.match(numericAndFractionRegex) && string.match(numericAndFractionRegex)[0], string.replace(string.match(numericAndFractionRegex)[0], '').trim()];
   } else {
     return [null, string]
   }
