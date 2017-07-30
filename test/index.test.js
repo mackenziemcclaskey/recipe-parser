@@ -103,6 +103,13 @@ describe('recipe parser', () => {
     it('"1 pinch water"', () => {
       expect(parse('1 pinch salt').unit).to.equal('pinch');      
     });
+    it('"1 (14.5 oz) can tomatoes"', () => {
+      expect(parse('1 (14.5 oz) can tomatoes')).to.deep.equal({
+        unit: 'can',
+        quantity: '1',
+        ingredient: '(14.5 oz) tomatoes'
+      });  
+    });
   });
 
   it('translates unit when no unit provided', () => {
@@ -161,6 +168,8 @@ describe('recipe parser', () => {
       expect(parse('1 tbsp water').unit).to.equal('tablespoon');
       expect(parse('1 tbspn water').unit).to.equal('tablespoon');
       expect(parse('2 tablespoons water').unit).to.equal('tablespoon');
+      expect(parse('1 Tablespoon water').unit).to.equal('tablespoon');
+      expect(parse('2 Tablespoons water').unit).to.equal('tablespoon');
     });
     it('"1 teaspoon water"', () => {
       expect(parse('1 tsp water').unit).to.equal('teaspoon');
