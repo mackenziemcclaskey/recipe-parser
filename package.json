@@ -1,11 +1,14 @@
 {
   "name": "recipe-ingredient-parser",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Natural language parser for recipes and ingredient lists",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "mocha test/index.test.js -w",
-    "test:ci": "mocha test/index.test.js"
+    "build": "rm -rf lib && babel src -d lib",
+    "lint": "eslint src test",
+    "prepublish": "npm run build",
+    "test": "mocha --require babel-polyfill --compilers js:babel-register -w",
+    "test:ci": "npm run lint && mocha --require babel-polyfill --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
@@ -18,7 +21,20 @@
   },
   "homepage": "https://github.com/mfernandez-rally/recipe-parser#readme",
   "devDependencies": {
-    "chai": "3.5.0",
-    "mocha": "3.2.0"
+    "babel-polyfill": "^6.23.0",
+    "babel-register": "^6.24.1",
+    "chai": "^4.1.0",
+    "eslint": "^4.3.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^3.5.0"
+  },
+  "dependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0"
   }
 }

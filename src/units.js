@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   'cup': ['c', 'c.', 'cups'],
   'gallon': ['gal', 'gallons'],
   'ounce': ['oz', 'oz.', 'ounces'],
@@ -18,4 +18,4 @@ module.exports = {
   'bag': [],
   'pinch': ['pinches'],
   'can': []
-}
+};
