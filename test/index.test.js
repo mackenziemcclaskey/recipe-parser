@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-const parse = require('../src/index').parse;
+import { expect } from 'chai';
+import { parse } from '../src/index';
 
 describe('recipe parser', () => {
   it('returns an object', () => {
@@ -25,7 +25,7 @@ describe('recipe parser', () => {
 
     describe('of unicode fractions', () => {
       const unicodeAmounts = ['¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞'];
-      const unicodeExpectedAmounts = ['0.25', '0.5', '0.75', '0.142', '0.111', '0.1', '0.333', '0.666', '0.2', '0.4', '0.6', '0.8', '0.166', '0.833', '0.125', '0.375', '0.625', '0.875'];      
+      const unicodeExpectedAmounts = ['0.25', '0.5', '0.75', '0.142', '0.111', '0.1', '0.333', '0.666', '0.2', '0.4', '0.6', '0.8', '0.166', '0.833', '0.125', '0.375', '0.625', '0.875'];
 
       for (let u = 0; u < unicodeAmounts.length; u++) {
         let element = unicodeAmounts[u];
@@ -44,7 +44,7 @@ describe('recipe parser', () => {
         it(`${element} to ${expectedAmount}`, () => {
           expect(parse(`${element} teaspoon water`).quantity).to.equal(expectedAmount);
         });
-      }  
+      }
     });
   });
 
@@ -101,14 +101,14 @@ describe('recipe parser', () => {
       expect(parse('1 bag garlic').unit).to.equal('bag');
     });
     it('"1 pinch water"', () => {
-      expect(parse('1 pinch salt').unit).to.equal('pinch');      
+      expect(parse('1 pinch salt').unit).to.equal('pinch');
     });
     it('"1 (14.5 oz) can tomatoes"', () => {
       expect(parse('1 (14.5 oz) can tomatoes')).to.deep.equal({
         unit: 'can',
         quantity: '1',
         ingredient: '(14.5 oz) tomatoes'
-      });  
+      });
     });
   });
 
@@ -179,32 +179,32 @@ describe('recipe parser', () => {
       expect(parse('2 teaspoons water').unit).to.equal('teaspoon');
     });
     it('"1 gram water"', () => {
-      expect(parse('1 g water').unit).to.equal('gram');      
-      expect(parse('1 g. water').unit).to.equal('gram');      
-      expect(parse('2 grams water').unit).to.equal('gram');      
+      expect(parse('1 g water').unit).to.equal('gram');
+      expect(parse('1 g. water').unit).to.equal('gram');
+      expect(parse('2 grams water').unit).to.equal('gram');
     });
     it('"1 kilogram water"', () => {
-      expect(parse('1 kg water').unit).to.equal('kilogram');      
-      expect(parse('1 kg. water').unit).to.equal('kilogram');      
-      expect(parse('2 kilograms water').unit).to.equal('kilogram');      
+      expect(parse('1 kg water').unit).to.equal('kilogram');
+      expect(parse('1 kg. water').unit).to.equal('kilogram');
+      expect(parse('2 kilograms water').unit).to.equal('kilogram');
     });
     it('"1 liter water"', () => {
-      expect(parse('1 l water').unit).to.equal('liter');      
-      expect(parse('1 l. water').unit).to.equal('liter');      
-      expect(parse('2 liters water').unit).to.equal('liter');      
+      expect(parse('1 l water').unit).to.equal('liter');
+      expect(parse('1 l. water').unit).to.equal('liter');
+      expect(parse('2 liters water').unit).to.equal('liter');
     });
     it('"1 milligram water"', () => {
-      expect(parse('1 mg water').unit).to.equal('milligram');      
-      expect(parse('1 mg. water').unit).to.equal('milligram');      
-      expect(parse('1 milligrams water').unit).to.equal('milligram');      
+      expect(parse('1 mg water').unit).to.equal('milligram');
+      expect(parse('1 mg. water').unit).to.equal('milligram');
+      expect(parse('1 milligrams water').unit).to.equal('milligram');
     });
     it('"1 milliliter water"', () => {
-      expect(parse('1 ml water').unit).to.equal('milliliter');      
-      expect(parse('1 ml. water').unit).to.equal('milliliter');      
-      expect(parse('1 milliliters water').unit).to.equal('milliliter');      
+      expect(parse('1 ml water').unit).to.equal('milliliter');
+      expect(parse('1 ml. water').unit).to.equal('milliliter');
+      expect(parse('1 milliliters water').unit).to.equal('milliliter');
     });
     it('"1 pinch water"', () => {
-      expect(parse('2 pinches salt').unit).to.equal('pinch');      
+      expect(parse('2 pinches salt').unit).to.equal('pinch');
     });
   });
 

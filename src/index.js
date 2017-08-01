@@ -1,23 +1,27 @@
-const units = require('./units');
-const convert = require('./convert');
+import units from './units';
+import * as convert from './convert';
 
-const getUnit = (string) => {
-  for (unit in units) {
-    if (string === unit) return { unit, unit };
-    for (shorthand of units[unit]) {
-      if (string === shorthand) return { unit, shorthand };
+function getUnit(input) {
+  for (let unit of Object.keys(units)) {
+    if (input === unit) {
+      return { unit };
+    }
+    for (let shorthand of units[unit]) {
+      if (input === shorthand) {
+        return { unit, shorthand };
+      }
     }
   }
   return {};
 }
 
-const parse = (recipeString) => {
+export function parse(recipeString) {
   const ingredientLine = recipeString.trim();
 
   let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine);
 
   quantity = convert.convertFromFraction(quantity);
-  
+
   let extraInfo;
   if (noQuantity.match(/\(([^\)]+)\)/)) {
     extraInfo = noQuantity.match(/\(([^\)]+)\)/)[0];
@@ -28,12 +32,8 @@ const parse = (recipeString) => {
   const ingredient = !!shorthand ? noQuantity.replace(shorthand, '').trim() : noQuantity.replace(unit, '').trim();
 
   return {
-    quantity: quantity,
+    quantity,
     unit: !!unit ? unit : null,
     ingredient: extraInfo ? `${extraInfo} ${ingredient}` : ingredient
   };
-}
-
-module.exports = {
-  parse
 }
