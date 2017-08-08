@@ -37,3 +37,33 @@ export function parse(recipeString) {
     ingredient: extraInfo ? `${extraInfo} ${ingredient}` : ingredient
   };
 }
+
+export function combine(ingredientArray) {
+  const combinedIngredients = ingredientArray.reduce((acc, ingredient) => {
+    const key = ingredient.ingredient + ingredient.unit; // when combining different units, remove this from the key and just use the name
+    const existingIngredient = acc[key];
+
+    if (existingIngredient) {
+      return Object.assign(acc, { [key]: combineTwoIngredients(existingIngredient, ingredient) });
+    } else {
+      return Object.assign(acc, { [key]: ingredient });
+    }
+  }, {});
+
+  return Object.keys(combinedIngredients).reduce((acc, key) => {
+    return acc.concat(combinedIngredients[key]);
+  }, []).sort(compareIngredients);
+}
+
+function combineTwoIngredients(existingIngredients, ingredient) {
+  const quantity = (Number(existingIngredients.quantity) + Number(ingredient.quantity)).toString();
+  return Object.assign({}, existingIngredients, { quantity });
+}
+
+function compareIngredients(a, b) {
+  if (a.ingredient < b.ingredient)
+    return -1;
+  if (a.ingredient > b.ingredient)
+    return 1;
+  return 0;
+}

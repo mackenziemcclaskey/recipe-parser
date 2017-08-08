@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parse } from '../src/index';
+import { parse, combine } from '../src/index';
 
 describe('recipe parser', () => {
   it('returns an object', () => {
@@ -110,6 +110,20 @@ describe('recipe parser', () => {
         ingredient: '(14.5 oz) tomatoes'
       });
     });
+    it('"1 (16 oz) box pasta"', () => {
+      expect(parse('1 (16 oz) box pasta')).to.deep.equal({
+        unit: 'box',
+        quantity: '1',
+        ingredient: '(16 oz) pasta'
+      });
+    });
+    it('"1 slice cheese"', () => {
+      expect(parse('1 slice cheese')).to.deep.equal({
+        unit: 'slice',
+        quantity: '1',
+        ingredient: 'cheese'
+      });
+    });
   });
 
   it('translates unit when no unit provided', () => {
@@ -215,5 +229,188 @@ describe('recipe parser', () => {
     it('"1 teaspoon milk"', () => {
       expect(parse('1 teaspoon milk').ingredient).to.equal('milk');
     });
+  });
+});
+
+describe('combine ingredients', () => {
+  it('accepts an empty array', () => {
+    expect(combine([])).to.deep.equal([]);
+  });
+
+  it('returns sorted ingredients', () => {
+    const ingredientArray = [
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      },
+      {
+        ingredient: 'apples',
+        quantity: '2',
+        unit: 'pound'
+      }
+    ];
+    expect(combine(ingredientArray)).to.deep.equal([
+      {
+        ingredient: 'apples',
+        quantity: '2',
+        unit: 'pound'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      }
+    ]);
+  });
+
+  it('combines two ingredient objects into one', () => {
+    const ingredientArray = [
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      }
+    ];
+    expect(combine(ingredientArray)).to.deep.equal([
+      {
+        ingredient: 'butter',
+        quantity: '4',
+        unit: 'tablespoon'
+      }
+    ]);
+  });
+
+  it('combines three ingredient objects into one', () => {
+    const ingredientArray = [
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      }
+    ];
+    expect(combine(ingredientArray)).to.deep.equal([
+      {
+        ingredient: 'butter',
+        quantity: '6',
+        unit: 'tablespoon'
+      }
+    ]);
+  });
+
+  it('combines four ingredient objects into two', () => {
+    const ingredientArray = [
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      },
+      {
+        ingredient: 'apple',
+        quantity: '2',
+        unit: 'pound'
+      }
+    ];
+    expect(combine(ingredientArray)).to.deep.equal([
+      {
+        ingredient: 'apple',
+        quantity: '2',
+        unit: 'pound'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '6',
+        unit: 'tablespoon'
+      }
+    ]);
+  });
+
+  it('does not combine if ingredients have different units (for now)', () => {
+    const ingredientArray = [
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '1',
+        unit: 'stick'
+      },
+      {
+        ingredient: 'apple',
+        quantity: '2',
+        unit: 'pound'
+      }
+    ];
+    expect(combine(ingredientArray)).to.deep.equal([
+      {
+        ingredient: 'apple',
+        quantity: '2',
+        unit: 'pound'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '4',
+        unit: 'tablespoon'
+      },
+      {
+        ingredient: 'butter',
+        quantity: '1',
+        unit: 'stick'
+      }
+    ]);
+  });
+
+  it('handles the no-unit case', () => {
+    const ingredientArray = [
+      {
+        ingredient: 'tortilla',
+        quantity: '10',
+        unit: null
+      },
+      {
+        ingredient: 'tortilla',
+        quantity: '5',
+        unit: null
+      }
+    ];
+    expect(combine(ingredientArray)).to.deep.equal([
+      {
+        ingredient: 'tortilla',
+        quantity: '15',
+        unit: null
+      }
+    ]);
   });
 });

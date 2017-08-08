@@ -14,8 +14,10 @@ export default {
   'milliliter': ['ml', 'ml.', 'milliliters'],
   'large': [],
   'whole': [],
-  'clove': [],
-  'bag': [],
+  'clove': ['cloves'],
+  'bag': ['bags'],
+  'box': ['boxes'],
   'pinch': ['pinches'],
-  'can': []
+  'can': ['cans'],
+  'slice': ['slices']
 };
