@@ -28,8 +28,8 @@ describe('recipe parser', () => {
       const unicodeExpectedAmounts = ['0.25', '0.5', '0.75', '0.142', '0.111', '0.1', '0.333', '0.666', '0.2', '0.4', '0.6', '0.8', '0.166', '0.833', '0.125', '0.375', '0.625', '0.875'];
 
       for (let u = 0; u < unicodeAmounts.length; u++) {
-        let element = unicodeAmounts[u];
-        let expectedAmount = unicodeExpectedAmounts[u];
+        const element = unicodeAmounts[u];
+        const expectedAmount = unicodeExpectedAmounts[u];
         it(`${element} to ${expectedAmount}`, () => {
           expect(parse(`${element} teaspoon water`).quantity).to.equal(expectedAmount);
         });
@@ -39,8 +39,8 @@ describe('recipe parser', () => {
       const mixedExpectedValues = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'];
 
       for (let u = 0; u < mixedValues.length; u++) {
-        let element = mixedValues[u];
-        let expectedAmount = (Number(mixedExpectedValues[u]) + Number(unicodeExpectedAmounts[u])).toString();
+        const element = mixedValues[u];
+        const expectedAmount = (Number(mixedExpectedValues[u]) + Number(unicodeExpectedAmounts[u])).toString();
         it(`${element} to ${expectedAmount}`, () => {
           expect(parse(`${element} teaspoon water`).quantity).to.equal(expectedAmount);
         });

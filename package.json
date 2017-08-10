@@ -4,11 +4,14 @@
   "description": "Natural language parser for recipes and ingredient lists",
   "main": "lib/index.js",
   "scripts": {
-    "build": "rm -rf lib && babel src -d lib",
-    "lint": "eslint src test",
+    "build": "rm -rf lib && tsc",
+    "build:test": "rm -rf testDist && tsc -p test/tsconfig.json",
+    "lint": "tslint \"{./**/*.ts,./**/*.tsx}\" --exclude \"{./node_modules/**,./**/*.d.ts}\"",
     "prepublish": "npm run build",
-    "test": "mocha --require babel-polyfill --compilers js:babel-register -w",
-    "test:ci": "npm run lint && mocha --require babel-polyfill --compilers js:babel-register"
+    "test": "npm run build:test && NODE_ENV=test mocha testDist/test/**/*.js",
+    "test:watch": "nodemon --ignore lib --ignore testDist -e ts,tsx -x 'npm run test --silent || true'",
+    "test:ci": "npm run lint && npm test",
+    "watch": "nodemon --watch src -e ts,tsx -x 'npm run build'"
   },
   "repository": {
     "type": "git",
@@ -21,20 +24,11 @@
   },
   "homepage": "https://github.com/mfernandez-rally/recipe-parser#readme",
   "devDependencies": {
-    "babel-polyfill": "^6.23.0",
-    "babel-register": "^6.24.1",
+    "@types/chai": "^4.0.2",
+    "@types/mocha": "^2.2.41",
     "chai": "^4.1.0",
-    "eslint": "^4.3.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-mocha": "^4.11.0",
-    "eslint-plugin-node": "^5.1.1",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "mocha": "^3.5.0"
-  },
-  "dependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-preset-env": "^1.6.0"
+    "mocha": "^3.5.0",
+    "tslint": "^5.6.0",
+    "typescript": "^2.4.2"
   }
 }
