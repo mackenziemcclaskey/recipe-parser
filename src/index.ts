@@ -1,34 +1,40 @@
-import units from './units';
 import * as convert from './convert';
+import units from './units';
 
-function getUnit(input) {
-  for (let unit of Object.keys(units)) {
+export interface Ingredient {
+  ingredient: string;
+  quantity: string | null;
+  unit: string | null;
+}
+
+function getUnit(input: string) {
+  for (const unit of Object.keys(units)) {
     if (input === unit) {
-      return { unit };
+      return [unit];
     }
-    for (let shorthand of units[unit]) {
+    for (const shorthand of units[unit]) {
       if (input === shorthand) {
-        return { unit, shorthand };
+        return [unit, shorthand];
       }
     }
   }
-  return {};
+  return [];
 }
 
-export function parse(recipeString) {
+export function parse(recipeString: string) {
   const ingredientLine = recipeString.trim();
 
-  let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine);
+  let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
   quantity = convert.convertFromFraction(quantity);
 
   let extraInfo;
-  if (noQuantity.match(/\(([^\)]+)\)/)) {
-    extraInfo = noQuantity.match(/\(([^\)]+)\)/)[0];
+  if (convert.getFirstMatch(noQuantity, /\(([^\)]+)\)/)) {
+    extraInfo = convert.getFirstMatch(noQuantity, /\(([^\)]+)\)/);
     noQuantity = noQuantity.replace(extraInfo, '').trim();
   }
 
-  const { unit, shorthand } = getUnit(noQuantity.split(' ')[0]);
+  const [unit, shorthand] = getUnit(noQuantity.split(' ')[0]) as string[];
   const ingredient = !!shorthand ? noQuantity.replace(shorthand, '').trim() : noQuantity.replace(unit, '').trim();
 
   return {
@@ -38,7 +44,7 @@ export function parse(recipeString) {
   };
 }
 
-export function combine(ingredientArray) {
+export function combine(ingredientArray: Ingredient[]) {
   const combinedIngredients = ingredientArray.reduce((acc, ingredient) => {
     const key = ingredient.ingredient + ingredient.unit; // when combining different units, remove this from the key and just use the name
     const existingIngredient = acc[key];
@@ -48,22 +54,23 @@ export function combine(ingredientArray) {
     } else {
       return Object.assign(acc, { [key]: ingredient });
     }
-  }, {});
+  }, {} as { [key: string]: Ingredient });
 
   return Object.keys(combinedIngredients).reduce((acc, key) => {
-    return acc.concat(combinedIngredients[key]);
-  }, []).sort(compareIngredients);
+    const ingredient = combinedIngredients[key];
+    return acc.concat(ingredient);
+  }, [] as Ingredient[]).sort(compareIngredients);
 }
 
-function combineTwoIngredients(existingIngredients, ingredient) {
+// TODO: Maybe change this to existingIngredients: Ingredient | Ingredient[]
+function combineTwoIngredients(existingIngredients: Ingredient, ingredient: Ingredient): Ingredient {
   const quantity = (Number(existingIngredients.quantity) + Number(ingredient.quantity)).toString();
   return Object.assign({}, existingIngredients, { quantity });
 }
 
-function compareIngredients(a, b) {
-  if (a.ingredient < b.ingredient)
-    return -1;
-  if (a.ingredient > b.ingredient)
-    return 1;
-  return 0;
+function compareIngredients(a: Ingredient, b: Ingredient) {
+  if (a.ingredient === b.ingredient) {
+    return 0;
+  }
+  return a.ingredient < b.ingredient ? -1 : 1;
 }
