@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { parse, combine } from '../src/index';
+import { parse, combine, prettyPrintingPress } from '../src/index';
 
 describe('recipe parser', () => {
   it('returns an object', () => {
@@ -99,6 +99,9 @@ describe('recipe parser', () => {
     });
     it('of "1 bag garlic"', () => {
       expect(parse('1 bag garlic').unit).to.equal('bag');
+    });
+    it('of "1 package sausage"', () => {
+      expect(parse('1 package sausage').unit).to.equal('package');
     });
     it('"1 pinch water"', () => {
       expect(parse('1 pinch salt').unit).to.equal('pinch');
@@ -413,4 +416,70 @@ describe('combine ingredients', () => {
       }
     ]);
   });
+});
+
+describe('pretty printing press', () => {
+  const ingredients = [{
+    ingredient: 'milk',
+    unit: 'cup',
+    quantity: '1.5'
+  }, {
+    ingredient: 'milk',
+    unit: 'cup',
+    quantity: '0.25'
+  }, {
+    ingredient: 'milk',
+    unit: 'cup',
+    quantity: '1'
+  }, {
+    ingredient: 'something',
+    unit: 'box',
+    quantity: '2'
+  }, {
+    ingredient: 'milk',
+    unit: 'teaspoon',
+    quantity: '1.333'
+  }, {
+    ingredient: 'milk',
+    unit: 'teaspoon',
+    quantity: '1.666'
+  }, {
+    ingredient: 'milk',
+    unit: 'teaspoon',
+    quantity: '1.111'
+  }, {
+    ingredient: 'milk',
+    unit: 'teaspoon',
+    quantity: '1.166'
+  }, {
+    ingredient: 'milk',
+    unit: 'teaspoon',
+    quantity: '1.833'
+  }, {
+    ingredient: 'powdered sugar',
+    unit: null,
+    quantity: null
+  }, {
+    ingredient: 'eggs',
+    unit: null,
+    quantity: '18'
+  }];
+  const expectedOutcome = [
+    '1 1/2 cups milk',
+    '1/4 cup milk',
+    '1 cup milk',
+    '2 boxes something',
+    '1 1/3 teaspoons milk',
+    '1 2/3 teaspoons milk',
+    '1 1/9 teaspoons milk',
+    '1 1/6 teaspoons milk',
+    '1 5/6 teaspoons milk',
+    'powdered sugar',
+    '18 eggs'
+  ];
+  for (let i = 0; i < ingredients.length; i++) {
+    it(`returns expected outcome ${expectedOutcome[i]}`, () => {
+      expect(prettyPrintingPress(ingredients[i])).to.equal(expectedOutcome[i]);
+    });
+  }
 });

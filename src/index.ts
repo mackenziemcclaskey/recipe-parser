@@ -1,5 +1,6 @@
 import * as convert from './convert';
-import units from './units';
+import { units, pluralUnits } from './units';
+import { repeatingFractions } from './repeatingFractions';
 
 export interface Ingredient {
   ingredient: string;
@@ -8,13 +9,20 @@ export interface Ingredient {
 }
 
 function getUnit(input: string) {
+  if (units[input] || pluralUnits[input]) {
+    return [input];
+  }
   for (const unit of Object.keys(units)) {
-    if (input === unit) {
-      return [unit];
-    }
     for (const shorthand of units[unit]) {
       if (input === shorthand) {
         return [unit, shorthand];
+      }
+    }
+  }
+  for (const pluralUnit of Object.keys(pluralUnits)) {
+    for (const shorthand of pluralUnits[pluralUnit]) {
+      if (input === shorthand) {
+        return [pluralUnit, shorthand];
       }
     }
   }
@@ -60,6 +68,51 @@ export function combine(ingredientArray: Ingredient[]) {
     const ingredient = combinedIngredients[key];
     return acc.concat(ingredient);
   }, [] as Ingredient[]).sort(compareIngredients);
+}
+
+export function prettyPrintingPress(ingredient: Ingredient) {
+  let quantity = '';
+  let unit = ingredient.unit;
+  if (ingredient.quantity) {
+    const [whole, remainder] = ingredient.quantity.split('.');
+    if (+whole !== 0 && typeof whole !== 'undefined') {
+      quantity = whole;
+    }
+    if (+remainder !== 0 && typeof remainder !== 'undefined') {
+      let fractional;
+      if (repeatingFractions[remainder]) {
+        fractional = repeatingFractions[remainder];
+      } else {
+        const fraction = '0.' + remainder;
+        const len = fraction.length - 2;
+        let denominator = Math.pow(10, len);
+        let numerator = +fraction * denominator;
+        
+        const divisor = gcd(numerator, denominator);
+  
+        numerator /= divisor;
+        denominator /= divisor;
+        fractional = Math.floor(numerator) + '/' + Math.floor(denominator);
+      }
+
+      quantity += quantity ? ' ' + fractional : fractional;
+    }
+    if (((+whole !== 0 && typeof remainder !== 'undefined') || +whole > 1) && unit) {
+      unit = pluralUnits[unit][0] || unit + 's';
+    }
+  } else {
+    return ingredient.ingredient;
+  }
+
+  return `${quantity}${unit ? ' ' + unit : ''} ${ingredient.ingredient}`;
+}
+
+function gcd(a: number, b: number): number {
+  if (b < 0.0000001) {
+    return a;
+  }
+
+  return gcd(b, Math.floor(a % b));
 }
 
 // TODO: Maybe change this to existingIngredients: Ingredient | Ingredient[]
