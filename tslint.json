@@ -8,6 +8,7 @@
     "max-line-length": [false],
     "member-access": [false],
     "member-ordering": [false],
+    "no-console": [true, "log", "error"],
     "no-empty": false,
     "no-trailing-whitespace": false,
     "no-unused-expression": false,
