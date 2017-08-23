@@ -463,6 +463,10 @@ describe('pretty printing press', () => {
     ingredient: 'eggs',
     unit: null,
     quantity: '18'
+  }, {
+    ingredient: 'eggs',
+    unit: 'large',
+    quantity: '18'
   }];
   const expectedOutcome = [
     '1 1/2 cups milk',
@@ -475,7 +479,8 @@ describe('pretty printing press', () => {
     '1 1/6 teaspoons milk',
     '1 5/6 teaspoons milk',
     'powdered sugar',
-    '18 eggs'
+    '18 eggs',
+    '18 large eggs'
   ];
   for (let i = 0; i < ingredients.length; i++) {
     it(`returns expected outcome ${expectedOutcome[i]}`, () => {
