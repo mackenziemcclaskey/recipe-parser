@@ -12,8 +12,6 @@ export const units = {
   liter: ['l', 'l.'],
   milligram: ['mg', 'mg.'],
   milliliter: ['ml', 'ml.'],
-  large: [],
-  whole: [],
   package: ['pkg', 'pkgs']
 } as { [key: string]: string[] };
 
@@ -37,5 +35,7 @@ export const pluralUnits = {
   pinch: ['pinches'],
   can: ['cans'],
   slice: ['slices'],
-  package: ['packages']
+  large: ['large'],
+  whole: ['whole'],
+  package: ['packages'],
 } as { [key: string]: string[] };
