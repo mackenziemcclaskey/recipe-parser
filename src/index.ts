@@ -117,7 +117,7 @@ function gcd(a: number, b: number): number {
 
 // TODO: Maybe change this to existingIngredients: Ingredient | Ingredient[]
 function combineTwoIngredients(existingIngredients: Ingredient, ingredient: Ingredient): Ingredient {
-  const quantity = (Number(existingIngredients.quantity) + Number(ingredient.quantity)).toString();
+  const quantity = existingIngredients.quantity && ingredient.quantity ? (Number(existingIngredients.quantity) + Number(ingredient.quantity)).toString() : null;
   return Object.assign({}, existingIngredients, { quantity });
 }
 
