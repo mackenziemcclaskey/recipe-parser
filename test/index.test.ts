@@ -416,6 +416,28 @@ describe('combine ingredients', () => {
       }
     ]);
   });
+
+  it('handles the no-unit and no-quantity case', () => {
+    const ingredientArray = [
+      {
+        ingredient: 'Powdered Sugar',
+        quantity: null,
+        unit: null
+      },
+      {
+        ingredient: 'Powdered Sugar',
+        quantity: null,
+        unit: null
+      }
+    ];
+    expect(combine(ingredientArray)).to.deep.equal([
+      {
+        ingredient: 'Powdered Sugar',
+        quantity: null,
+        unit: null
+      }
+    ]);
+  });
 });
 
 describe('pretty printing press', () => {
