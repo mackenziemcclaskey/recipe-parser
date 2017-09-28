@@ -10,8 +10,14 @@ describe('recipe parser', () => {
     it('of "1 teaspoon water"', () => {
       expect(parse('1 teaspoon water').quantity).to.equal('1');
     });
+    it('of "1.5 teaspoon water"', () => {
+      expect(parse('1.5 teaspoon water').quantity).to.equal('1.5');
+    });
     it('of "1 1/2 teaspoon water"', () => {
       expect(parse('1 1/2 teaspoon water').quantity).to.equal('1.5');
+    });
+    it('of "1/3 teaspoon water"', () => {
+      expect(parse('1/3 cup water').quantity).to.equal('0.333');
     });
     it('of "10-20 teaspoon water"', () => {
       expect(parse('10-20 teaspoon water').quantity).to.equal('10-20');
@@ -45,6 +51,14 @@ describe('recipe parser', () => {
           expect(parse(`${element} teaspoon water`).quantity).to.equal(expectedAmount);
         });
       }
+    });
+
+    it('doesn\'t freak out if a strange unicode character is present', () => {
+      expect(parse('1/3 cup confectioners’ sugar')).to.deep.equal({
+        quantity: '0.333',
+        unit: 'cup',
+        ingredient: 'confectioners’ sugar'
+      });
     });
   });
 

@@ -1,6 +1,6 @@
 {
   "name": "recipe-ingredient-parser",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Natural language parser for recipes and ingredient lists",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -31,5 +31,8 @@
     "mocha": "^3.5.0",
     "tslint": "^5.6.0",
     "typescript": "^2.4.2"
+  },
+  "dependencies": {
+    "@types/node": "^8.0.28"
   }
 }

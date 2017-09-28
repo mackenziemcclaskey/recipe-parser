@@ -19,7 +19,7 @@ export function getFirstMatch(line: string, regex: RegExp) {
   return (match && match[0]) || '';
 }
 
-const unicodeObj: {[key: string]: string} = {
+const unicodeObj: { [key: string]: string } = {
   '¼': '1/4',
   '½': '1/2',
   '¾': '3/4',
@@ -41,19 +41,21 @@ const unicodeObj: {[key: string]: string} = {
 };
 
 export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
-  const numericAndFractionRegex = /^(\d+\/\d+)|(\d+\s\d+\/\d+)|(\d+\-\d+)|\d+/g;
+  const numericAndFractionRegex = /^(\d+\/\d+)|(\d+\s\d+\/\d+)|(\d+\-\d+)|(\d+.\d+)|\d+/g;
   const unicodeFractionRegex = /\d*[^\u0000-\u007F]+/g;
   const onlyUnicodeFraction = /[^\u0000-\u007F]+/g;
 
   if (ingredientLine.match(unicodeFractionRegex)) {
     const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
     const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);
-    return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '').trim()];
-  } else if (ingredientLine.match(numericAndFractionRegex)) {
-    return [ingredientLine.match(numericAndFractionRegex) && getFirstMatch(ingredientLine, numericAndFractionRegex), ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()];
-  } else {
-    return [null, ingredientLine];
+    if (unicodeObj[unicodePart]) {
+      return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '').trim()];
+    }
   }
+  if (ingredientLine.match(numericAndFractionRegex)) {
+    return [ingredientLine.match(numericAndFractionRegex) && getFirstMatch(ingredientLine, numericAndFractionRegex), ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()];
+  }
+  return [null, ingredientLine];
 }
 
 function keepThreeDecimals(val: number) {
