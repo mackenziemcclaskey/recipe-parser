@@ -45,12 +45,3 @@ Will return
 
 ### Unicode Fractions
 Will also correctly parse unicode fractions into the proper amount
-
-### Development
-Clone the repo and `yarn` to install packages. If `yarn test` comes back good after your code changes, give yourself a pat on the back.
-
-## Natural Language Parsing
-This project uses Natural, for more information, see https://dzone.com/articles/using-natural-nlp-module
-
-### Publishing
-Checkout https://docs.npmjs.com/getting-started/publishing-npm-packages for more info

@@ -1,9 +1,6 @@
 import * as convert from './convert';
 import { units, pluralUnits } from './units';
 import { repeatingFractions } from './repeatingFractions';
-import * as Natural from 'natural';
-
-const nounInflector = new Natural.NounInflector();
 
 export interface Ingredient {
   ingredient: string;
@@ -18,13 +15,15 @@ function getUnit(input: string) {
   for (const unit of Object.keys(units)) {
     for (const shorthand of units[unit]) {
       if (input === shorthand) {
-        return [unit, input];
+        return [unit, shorthand];
       }
     }
   }
   for (const pluralUnit of Object.keys(pluralUnits)) {
-    if (input === pluralUnits[pluralUnit]) {
-      return [pluralUnit, input];
+    for (const shorthand of pluralUnits[pluralUnit]) {
+      if (input === shorthand) {
+        return [pluralUnit, shorthand];
+      }
     }
   }
   return [];
@@ -88,9 +87,9 @@ export function prettyPrintingPress(ingredient: Ingredient) {
         const len = fraction.length - 2;
         let denominator = Math.pow(10, len);
         let numerator = +fraction * denominator;
-
+        
         const divisor = gcd(numerator, denominator);
-
+  
         numerator /= divisor;
         denominator /= divisor;
         fractional = Math.floor(numerator) + '/' + Math.floor(denominator);
@@ -99,7 +98,7 @@ export function prettyPrintingPress(ingredient: Ingredient) {
       quantity += quantity ? ' ' + fractional : fractional;
     }
     if (((+whole !== 0 && typeof remainder !== 'undefined') || +whole > 1) && unit) {
-      unit = nounInflector.pluralize(unit);
+      unit = pluralUnits[unit][0] || unit + 's';
     }
   } else {
     return ingredient.ingredient;
