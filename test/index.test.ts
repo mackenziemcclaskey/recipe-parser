@@ -103,10 +103,10 @@ describe('recipe parser', () => {
       expect(parse('1 milliliter water').unit).to.equal('milliliter');
     });
     it('of "1 large onion"', () => {
-      expect(parse('1 large onion').unit).to.equal(null);
+      expect(parse('1 large onion').unit).to.equal('large');
     });
     it('of "1 whole onion"', () => {
-      expect(parse('1 whole onion').unit).to.equal(null);
+      expect(parse('1 whole onion').unit).to.equal('whole');
     });
     it('of "1 clove garlic"', () => {
       expect(parse('1 clove garlic').unit).to.equal('clove');
@@ -500,8 +500,8 @@ describe('pretty printing press', () => {
     unit: null,
     quantity: '18'
   }, {
-    ingredient: 'large eggs',
-    unit: null,
+    ingredient: 'eggs',
+    unit: 'large',
     quantity: '18'
   }];
   const expectedOutcome = [

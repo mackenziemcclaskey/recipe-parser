@@ -1,6 +1,6 @@
 {
   "name": "recipe-ingredient-parser",
-  "version": "1.5.4",
+  "version": "1.5.3",
   "description": "Natural language parser for recipes and ingredient lists",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -25,16 +25,14 @@
   },
   "homepage": "https://github.com/mfernandez-rally/recipe-parser#readme",
   "devDependencies": {
-    "@types/chai": "^4.1.4",
-    "@types/mocha": "^5.2.4",
+    "@types/chai": "^4.0.2",
+    "@types/mocha": "^2.2.41",
     "chai": "^4.1.0",
-    "mocha": "^5.2.0",
-    "tslint": "^5.10.0",
-    "typescript": "^2.9.2"
+    "mocha": "^3.5.0",
+    "tslint": "^5.6.0",
+    "typescript": "^2.4.2"
   },
   "dependencies": {
-    "@types/natural": "^0.2.33",
-    "@types/node": "^10.5.1",
-    "natural": "^0.6.1"
+    "@types/node": "^8.0.28"
   }
 }
