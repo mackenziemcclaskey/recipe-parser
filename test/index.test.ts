@@ -141,6 +141,10 @@ describe('recipe parser', () => {
         ingredient: 'cheese'
       });
     });
+    it('"2 Tbsp of Extra Virgin Olive Oil"', () => {
+      expect(parse('2 Tbsp of Extra Virgin Olive Oil').unit).to.equal('tablespoon');
+    });
+
   });
 
   it('translates unit when no unit provided', () => {
