@@ -49,7 +49,8 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
     const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
     const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);
     if (unicodeObj[unicodePart]) {
-      return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '').trim()];
+            return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '')
+                    .replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()];
     }
   }
   if (ingredientLine.match(numericAndFractionRegex)) {

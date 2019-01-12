@@ -247,6 +247,11 @@ describe('recipe parser', () => {
       expect(parse('1 teaspoon milk').ingredient).to.equal('milk');
     });
   });
+  describe('properly handles integer + unicode fractional quantity', () => {
+    it('"3 ½ cups of All Purpose Flour"', () => {
+      expect(parse('3 ½ cups of All Purpose Flour').ingredient).to.equal('of All Purpose Flour');
+    });
+  });
 });
 
 describe('combine ingredients', () => {
