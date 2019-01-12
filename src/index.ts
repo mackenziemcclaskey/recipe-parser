@@ -31,7 +31,7 @@ function getUnit(input: string) {
 }
 
 export function parse(recipeString: string) {
-  const ingredientLine = recipeString.trim();
+  const ingredientLine = recipeString.trim().toLowerCase();
 
   let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
@@ -45,11 +45,11 @@ export function parse(recipeString: string) {
 
   const [unit, shorthand] = getUnit(noQuantity.split(' ')[0]) as string[];
   const ingredient = !!shorthand ? noQuantity.replace(shorthand, '').trim() : noQuantity.replace(unit, '').trim();
-
+  const retIngredient = extraInfo ? `${extraInfo} ${ingredient}` : ingredient;
   return {
     quantity,
     unit: !!unit ? unit : null,
-    ingredient: extraInfo ? `${extraInfo} ${ingredient}` : ingredient
+    ingredient: retIngredient.replace(/^of /, '')
   };
 }
 
