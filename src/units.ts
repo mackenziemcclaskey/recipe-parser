@@ -3,17 +3,22 @@ export const units = {
   gallon: ['gal'],
   ounce: ['oz', 'oz.'],
   pint: ['pt', 'pts', 'pt.'],
-  pound: ['lb', 'lb.', 'lbs'],
-  quart: ['qt', 'qt.', 'qts'],
+  pound: ['lb', 'lb.', 'lbs', 'lbs.', 'Lb', 'Lbs'],
+  quart: ['qt', 'qt.', 'qts', 'qts.'],
   tablespoon: ['tbs', 'tbsp', 'tbspn', 'T', 'T.', 'Tablespoons', 'Tablespoon'],
   teaspoon: ['tsp', 'tspn', 't', 't.'],
   gram: ['g', 'g.'],
-  kilogram: ['kg', 'kg.'],
-  liter: ['l', 'l.'],
+  kilogram: ['kg', 'kg.', 'Kg', 'Kg.'],
+  liter: ['l', 'l.', 'L', 'L.'],
   milligram: ['mg', 'mg.'],
-  milliliter: ['ml', 'ml.'],
+  milliliter: ['ml', 'ml.', 'mL', 'mL.'],
   package: ['pkg', 'pkgs'],
-  stick: ['sticks']
+  stick: ['sticks'],
+  piece: ['pcs', 'pcs.'],
+  pinch: ['pinch'],
+  small: ['Small'],
+  medium: ['Medium'],
+  large: ['large', 'Large'],
 } as { [key: string]: string[] };
 
 export const pluralUnits = {
@@ -35,5 +40,6 @@ export const pluralUnits = {
   box: 'boxes',
   pinch: 'pinches',
   can: 'cans',
-  slice: 'slices'
+  slice: 'slices',
+  piece: 'pieces'
 } as { [key: string]: string };

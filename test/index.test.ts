@@ -28,6 +28,9 @@ describe('recipe parser', () => {
     it('of "10 1/2 teaspoon water"', () => {
       expect(parse('10 1/2 teaspoon water').quantity).to.equal('10.5');
     });
+    it('of "about 1/2 teaspoon water"', () => {
+      expect(parse('about 1/2 teaspoon water').quantity).to.equal('0.5');
+    });
 
     describe('of unicode fractions', () => {
       const unicodeAmounts = ['¼', '½', '¾', '⅐', '⅑', '⅒', '⅓', '⅔', '⅕', '⅖', '⅗', '⅘', '⅙', '⅚', '⅛', '⅜', '⅝', '⅞'];
@@ -103,7 +106,7 @@ describe('recipe parser', () => {
       expect(parse('1 milliliter water').unit).to.equal('milliliter');
     });
     it('of "1 large onion"', () => {
-      expect(parse('1 large onion').unit).to.equal(null);
+      expect(parse('1 large onion').unit).to.equal("large");
     });
     it('of "1 whole onion"', () => {
       expect(parse('1 whole onion').unit).to.equal(null);

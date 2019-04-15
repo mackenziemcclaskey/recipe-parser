@@ -1,7 +1,7 @@
 {
-  "name": "recipe-ingredient-parser",
-  "version": "1.5.6",
-  "description": "Natural language parser for recipes and ingredient lists",
+  "name": "recipe-ingredient-parser-v2",
+  "version": "1.0.0",
+  "description": "Natural language parser for recipes and ingredient lists, incl. combining ingredients",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mfernandez-rally/recipe-parser.git"
+    "url": "git+https://github.com/nsafai/recipe-parser.git"
   },
-  "author": "Mackenzie Fernandez <MackenzieLFernandez@gmail.com>",
+  "author": "Nicolai Safai <me@nicolaisafai.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mfernandez-rally/recipe-parser/issues"
+    "url": "https://github.com/nsafai/recipe-parser/issues"
   },
-  "homepage": "https://github.com/mfernandez-rally/recipe-parser#readme",
+  "homepage": "https://github.com/nsafai/recipe-parser#readme",
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/mocha": "^5.2.4",
@@ -36,5 +36,12 @@
     "@types/natural": "^0.2.33",
     "@types/node": "^10.5.1",
     "natural": "^0.6.1"
-  }
+  },
+  "keywords": [
+    "recipe",
+    "parser",
+    "ingredient",
+    "combine",
+    "units"
+  ]
 }

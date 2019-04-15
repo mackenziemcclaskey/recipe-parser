@@ -31,9 +31,13 @@ function getUnit(input: string) {
 }
 
 export function parse(recipeString: string) {
-  const ingredientLine = recipeString.trim();
+  const ingredientLine = recipeString.trim(); // removes leading and traling whitespace
 
+  // noQuantity represents rest of ingredient line
+  // for example: "1 pinch salt" --> quantity: 1, noQuantity: pinch salt
   let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
+
+  console.log("quantity", quantity, "noQuantity", noQuantity);
 
   quantity = convert.convertFromFraction(quantity);
 
@@ -88,9 +92,9 @@ export function prettyPrintingPress(ingredient: Ingredient) {
         const len = fraction.length - 2;
         let denominator = Math.pow(10, len);
         let numerator = +fraction * denominator;
-        
+
         const divisor = gcd(numerator, denominator);
-  
+
         numerator /= divisor;
         denominator /= divisor;
         fractional = Math.floor(numerator) + '/' + Math.floor(denominator);
