@@ -6,7 +6,8 @@ This project was built on top of code written by [mackenziefernandez](https://gi
 
 What's different from the original? 
 - this project contains some extra units (including units like `large`, `pinch`, etc.).
-- This project will *eventually* handle combining multiple ingredients with different units (for example, combining `45 mL milk` and `6 cups milk`)
+- this project assumes that any clarifications in an ingredient (in parentheses), should be placed at the end of the ingredient, not at the beginning, which is better for anyone that is sorting their ingredients.
+- this project will *eventually* handle combining multiple ingredients with different units (for example, combining `45 mL milk` and `6 cups milk`)
 
 ## To install
 `npm install recipe-ingredient-parser-v2` or `yarn add recipe-ingredient-parser-v2`
