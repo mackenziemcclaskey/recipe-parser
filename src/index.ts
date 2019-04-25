@@ -31,27 +31,29 @@ function getUnit(input: string) {
 }
 
 export function parse(recipeString: string) {
-  const ingredientLine = recipeString.trim(); // removes leading and traling whitespace
+  const ingredientLine = recipeString.trim(); // removes leading and trailing whitespace
 
-  // noQuantity represents rest of ingredient line
-  // for example: "1 pinch salt" --> quantity: 1, noQuantity: pinch salt
-  let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
+  // restOfIngredient represents rest of ingredient line
+  // for example: "1 pinch salt" --> quantity: 1, restOfIngredient: pinch salt
+  let [quantity, restOfIngredient] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
+
+  console.log("quantity is:", quantity, "and restOfIngredient is:", restOfIngredient);
 
   quantity = convert.convertFromFraction(quantity);
 
-  let extraInfo;
-  if (convert.getFirstMatch(noQuantity, /\(([^\)]+)\)/)) {
-    extraInfo = convert.getFirstMatch(noQuantity, /\(([^\)]+)\)/);
-    noQuantity = noQuantity.replace(extraInfo, '').trim();
+  let extraInfo; // extraInfo will be any info in parantheses
+  if (convert.getFirstMatch(restOfIngredient, /\(([^\)]+)\)/)) {
+    extraInfo = convert.getFirstMatch(restOfIngredient, /\(([^\)]+)\)/);
+    restOfIngredient = restOfIngredient.replace(extraInfo, '').trim();
   }
 
-  const [unit, shorthand] = getUnit(noQuantity.split(' ')[0]) as string[];
-  const ingredient = !!shorthand ? noQuantity.replace(shorthand, '').trim() : noQuantity.replace(unit, '').trim();
+  const [unit, shorthand] = getUnit(restOfIngredient.split(' ')[0]) as string[];
+  const ingredient = !!shorthand ? restOfIngredient.replace(shorthand, '').trim() : restOfIngredient.replace(unit, '').trim();
 
   return {
     quantity,
     unit: !!unit ? unit : null,
-    ingredient: extraInfo ? `${extraInfo} ${ingredient}` : ingredient
+    ingredient: extraInfo ? `${ingredient} ${extraInfo}` : ingredient
   };
 }
 

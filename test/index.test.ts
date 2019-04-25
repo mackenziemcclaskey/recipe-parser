@@ -130,6 +130,34 @@ describe('recipe parser', () => {
         ingredient: '(14.5 oz) tomatoes'
       });
     });
+    it('"25 lb beef stew chunks (or buy a roast and chop into small cubes)"', () => {
+      expect(parse('25 lb beef stew chunks (or buy a roast and chop into small cubes)')).to.deep.equal({
+        unit: 'pound',
+        quantity: '25',
+        ingredient: 'beef stew chunks (or buy a roast and chop into small cubes)'
+      });
+    });
+    // it('"parses ingredient with range: 1 to 2 chicken breasts"', () => {
+    //   expect(parse('1 to 2 chicken breasts')).to.deep.equal({
+    //     unit: null,
+    //     quantity: '1-2',
+    //     ingredient: 'breasts'
+    //   });
+    // });
+    // it('"parses ingredient with range: 1 - 2 chicken breasts"', () => {
+    //   expect(parse('1 - 2 chicken breasts')).to.deep.equal({
+    //     unit: null,
+    //     quantity: '1-2',
+    //     ingredient: 'breasts'
+    //   });
+    // });
+    // it('"parses ingredient with range: 1-2 chicken breasts"', () => {
+    //   expect(parse('1-2 chicken breasts')).to.deep.equal({
+    //     unit: null,
+    //     quantity: '1-2',
+    //     ingredient: 'breasts'
+    //   });
+    // });
     it('"1 (16 oz) box pasta"', () => {
       expect(parse('1 (16 oz) box pasta')).to.deep.equal({
         unit: 'box',

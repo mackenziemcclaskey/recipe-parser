@@ -16,7 +16,7 @@ export function convertFromFraction(value: string) {
 
 export function getFirstMatch(line: string, regex: RegExp) {
   const match = line.match(regex);
-  console.log("match is", match, "and the tuple is", (match && match[0]))
+  // console.log('first match is: ', (match && match[0]))
   return (match && match[0]) || '';
 }
 
@@ -49,12 +49,15 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
   if (ingredientLine.match(unicodeFractionRegex)) {
     const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
     const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);
-    console.log("numeric part is", numericPart, "and unicode part is", unicodePart);
+
+    // console.log("numeric part is", numericPart, "and unicode part is", unicodePart);
+
     if (unicodeObj[unicodePart]) {
       return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '').trim()];
     }
   }
   if (ingredientLine.match(numericAndFractionRegex)) {
+    // console.log([ingredientLine.match(numericAndFractionRegex) && getFirstMatch(ingredientLine, numericAndFractionRegex), ingredientLine])
     return [ingredientLine.match(numericAndFractionRegex) && getFirstMatch(ingredientLine, numericAndFractionRegex), ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()];
   }
   return [null, ingredientLine];
