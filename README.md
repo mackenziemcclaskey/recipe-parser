@@ -1,4 +1,4 @@
-# recipe-ingredient-parser
+# recipe-ingredient-parser-v2
 Natural language parser for recipes and lists of ingredients. Can parse a string into an object and also combine an array of these ingredient objects.
 
 ## About
@@ -9,10 +9,10 @@ What's different from the original?
 - This project will *eventually* handle combining multiple ingredients with different units (for example, combining `45 mL milk` and `6 cups milk`)
 
 ## To install
-`npm install recipe-ingredient-parser` or `yarn add recipe-ingredient-parser`
+`npm install recipe-ingredient-parser-v2` or `yarn add recipe-ingredient-parser-v2`
 
 ## To use
-`import { parse } from 'recipe-ingredient-parser';`
+`import { parse } from 'recipe-ingredient-parser-v2';`
 
 And then use on a string, for example:
 `parse('1 teaspoon basil');`
