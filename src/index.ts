@@ -33,15 +33,15 @@ function getUnit(input: string) {
 export function parse(recipeString: string) {
   const ingredientLine = recipeString.trim(); // removes leading and trailing whitespace
 
-  // restOfIngredient represents rest of ingredient line
-  // for example: "1 pinch salt" --> quantity: 1, restOfIngredient: pinch salt
+  /* restOfIngredient represents rest of ingredient line
+  For example: "1 pinch salt" --> quantity: 1, restOfIngredient: pinch salt */
   let [quantity, restOfIngredient] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
-
-  console.log("quantity is:", quantity, "and restOfIngredient is:", restOfIngredient);
 
   quantity = convert.convertFromFraction(quantity);
 
-  let extraInfo; // extraInfo will be any info in parantheses
+  /* extraInfo will be any info in parantheses. We'll place it at the end of the ingredient.
+  For example: "sugar (or other sweetener)" --> extraInfo: "(or other sweetener)" */
+  let extraInfo;
   if (convert.getFirstMatch(restOfIngredient, /\(([^\)]+)\)/)) {
     extraInfo = convert.getFirstMatch(restOfIngredient, /\(([^\)]+)\)/);
     restOfIngredient = restOfIngredient.replace(extraInfo, '').trim();

@@ -127,7 +127,7 @@ describe('recipe parser', () => {
       expect(parse('1 (14.5 oz) can tomatoes')).to.deep.equal({
         unit: 'can',
         quantity: '1',
-        ingredient: '(14.5 oz) tomatoes'
+        ingredient: 'tomatoes (14.5 oz)'
       });
     });
     it('"25 lb beef stew chunks (or buy a roast and chop into small cubes)"', () => {
@@ -162,7 +162,7 @@ describe('recipe parser', () => {
       expect(parse('1 (16 oz) box pasta')).to.deep.equal({
         unit: 'box',
         quantity: '1',
-        ingredient: '(16 oz) pasta'
+        ingredient: 'pasta (16 oz)'
       });
     });
     it('"1 slice cheese"', () => {

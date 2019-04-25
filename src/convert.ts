@@ -1,5 +1,5 @@
 export function convertFromFraction(value: string) {
-  // number comes in -> 1 1/3
+  // number comes in, for example: 1 1/3
   if (value && value.split(' ').length > 1) {
     const [whole, fraction] = value.split(' ');
     const [a, b] = fraction.split('/');
@@ -16,7 +16,6 @@ export function convertFromFraction(value: string) {
 
 export function getFirstMatch(line: string, regex: RegExp) {
   const match = line.match(regex);
-  // console.log('first match is: ', (match && match[0]))
   return (match && match[0]) || '';
 }
 
@@ -50,14 +49,12 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
     const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
     const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);
 
-    // console.log("numeric part is", numericPart, "and unicode part is", unicodePart);
-
+    // If there's a match for the unicodePart in our dictionary above
     if (unicodeObj[unicodePart]) {
       return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '').trim()];
     }
   }
   if (ingredientLine.match(numericAndFractionRegex)) {
-    // console.log([ingredientLine.match(numericAndFractionRegex) && getFirstMatch(ingredientLine, numericAndFractionRegex), ingredientLine])
     return [ingredientLine.match(numericAndFractionRegex) && getFirstMatch(ingredientLine, numericAndFractionRegex), ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()];
   }
   return [null, ingredientLine];
