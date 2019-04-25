@@ -16,28 +16,29 @@ export function convertFromFraction(value: string) {
 
 export function getFirstMatch(line: string, regex: RegExp) {
   const match = line.match(regex);
+  console.log("match is", match, "and the tuple is", (match && match[0]))
   return (match && match[0]) || '';
 }
 
 const unicodeObj: { [key: string]: string } = {
-  '¼': '1/4',
   '½': '1/2',
-  '¾': '3/4',
-  '⅐': '1/7',
-  '⅑': '1/9',
-  '⅒': '1/10',
   '⅓': '1/3',
   '⅔': '2/3',
+  '¼': '1/4',
+  '¾': '3/4',
   '⅕': '1/5',
   '⅖': '2/5',
   '⅗': '3/5',
   '⅘': '4/5',
   '⅙': '1/6',
   '⅚': '5/6',
+  '⅐': '1/7',
   '⅛': '1/8',
   '⅜': '3/8',
   '⅝': '5/8',
-  '⅞': '7/8'
+  '⅞': '7/8',
+  '⅑': '1/9',
+  '⅒': '1/10'
 };
 
 export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
@@ -48,6 +49,7 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
   if (ingredientLine.match(unicodeFractionRegex)) {
     const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
     const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);
+    console.log("numeric part is", numericPart, "and unicode part is", unicodePart);
     if (unicodeObj[unicodePart]) {
       return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '').trim()];
     }

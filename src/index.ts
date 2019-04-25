@@ -37,8 +37,6 @@ export function parse(recipeString: string) {
   // for example: "1 pinch salt" --> quantity: 1, noQuantity: pinch salt
   let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
-  console.log("quantity", quantity, "noQuantity", noQuantity);
-
   quantity = convert.convertFromFraction(quantity);
 
   let extraInfo;
