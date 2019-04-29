@@ -33,11 +33,17 @@ function getUnit(input: string) {
 export function parse(recipeString: string) {
   const ingredientLine = recipeString.trim(); // removes leading and trailing whitespace
 
-  /* restOfIngredient represents rest of ingredient line
+  /* restOfIngredient represents rest of ingredient line.
   For example: "1 pinch salt" --> quantity: 1, restOfIngredient: pinch salt */
   let [quantity, restOfIngredient] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
+  // TODO: Handle ranges like: "2 - 4 eggs" or "2 to 4 eggs"
+  console.log("quantity:", quantity)
+  console.log("restOfIngredient:", restOfIngredient)
+
   quantity = convert.convertFromFraction(quantity);
+
+  console.log("quantity after convertFromFraction:", quantity);
 
   /* extraInfo will be any info in parantheses. We'll place it at the end of the ingredient.
   For example: "sugar (or other sweetener)" --> extraInfo: "(or other sweetener)" */
@@ -47,8 +53,12 @@ export function parse(recipeString: string) {
     restOfIngredient = restOfIngredient.replace(extraInfo, '').trim();
   }
 
-  const [unit, shorthand] = getUnit(restOfIngredient.split(' ')[0]) as string[];
-  const ingredient = !!shorthand ? restOfIngredient.replace(shorthand, '').trim() : restOfIngredient.replace(unit, '').trim();
+  // grab unit and turn it into non-plural version, for ex: "Tablespoons" OR "Tsbp." --> "tablespoon"
+  const [unit, originalUnit] = getUnit(restOfIngredient.split(' ')[0]) as string[]
+  // remove unit from the ingredient if one was found and trim leading and trailing whitespace
+  const ingredient = !!originalUnit ? restOfIngredient.replace(originalUnit, '').trim() : restOfIngredient.replace(unit, '').trim();
+
+  // console.log("quantity before returning:", quantity);
 
   return {
     quantity,

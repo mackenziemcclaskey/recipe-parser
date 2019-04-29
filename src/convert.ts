@@ -41,10 +41,12 @@ const unicodeObj: { [key: string]: string } = {
 };
 
 export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
-  const numericAndFractionRegex = /^(\d+\/\d+)|(\d+\s\d+\/\d+)|(\d+\-\d+)|(\d+.\d+)|\d+/g;
+  const numericAndFractionRegex = /^(\d+\/\d+)|(\d+\s\d+\/\d+)|(\d+.\d+)|\d+/g;
+  const numericRangeWithSpaceRegex = /^(\d+\-\d+)|^(\d+\s\-\s\d+)|^(\d+\sto\s\d+)/g; // for ex: "1 to 2" or "1 - 2"
   const unicodeFractionRegex = /\d*[^\u0000-\u007F]+/g;
   const onlyUnicodeFraction = /[^\u0000-\u007F]+/g;
 
+  // found a unicode quantity inside our regex, for ex: '⅝'
   if (ingredientLine.match(unicodeFractionRegex)) {
     const numericPart = getFirstMatch(ingredientLine, numericAndFractionRegex);
     const unicodePart = getFirstMatch(ingredientLine, numericPart ? onlyUnicodeFraction : unicodeFractionRegex);
@@ -54,10 +56,25 @@ export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
       return [`${numericPart} ${unicodeObj[unicodePart]}`, ingredientLine.replace(getFirstMatch(ingredientLine, unicodeFractionRegex), '').trim()];
     }
   }
-  if (ingredientLine.match(numericAndFractionRegex)) {
-    return [ingredientLine.match(numericAndFractionRegex) && getFirstMatch(ingredientLine, numericAndFractionRegex), ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()];
+
+  // found a quantity range, for ex: "2 to 3"
+  if (ingredientLine.match(numericRangeWithSpaceRegex)) {
+    const quantity = getFirstMatch(ingredientLine, numericRangeWithSpaceRegex).replace('to', '-').split(' ').join('');
+    const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, numericRangeWithSpaceRegex), '').trim();
+    return [ingredientLine.match(numericRangeWithSpaceRegex) && quantity, restOfIngredient];
   }
-  return [null, ingredientLine];
+
+  // found a numeric/fraction quantity, for example: "1 1/3"
+  else if (ingredientLine.match(numericAndFractionRegex)) {
+    const quantity = getFirstMatch(ingredientLine, numericAndFractionRegex);
+    const restOfIngredient = ingredientLine.replace(getFirstMatch(ingredientLine, numericAndFractionRegex), '').trim()
+    return [ingredientLine.match(numericAndFractionRegex) && quantity, restOfIngredient];
+  }
+
+  // no parse-able quantity found
+  else {
+    return [null, ingredientLine];
+  }
 }
 
 function keepThreeDecimals(val: number) {

@@ -19,9 +19,6 @@ describe('recipe parser', () => {
     it('of "1/3 teaspoon water"', () => {
       expect(parse('1/3 cup water').quantity).to.equal('0.333');
     });
-    it('of "10-20 teaspoon water"', () => {
-      expect(parse('10-20 teaspoon water').quantity).to.equal('10-20');
-    });
     it('of "1/2 teaspoon water"', () => {
       expect(parse('1/2 teaspoon water').quantity).to.equal('0.5');
     });
@@ -30,6 +27,18 @@ describe('recipe parser', () => {
     });
     it('of "about 1/2 teaspoon water"', () => {
       expect(parse('about 1/2 teaspoon water').quantity).to.equal('0.5');
+    });
+
+    describe('translates the quantity range', () => {
+      it('of "10-20 teaspoon water"', () => {
+        expect(parse('10-20 teaspoon water').quantity).to.equal('10-20');
+      });
+      it('of "10 - 20 teaspoon water"', () => {
+        expect(parse('10 - 20 teaspoon water').quantity).to.equal('10-20');
+      });
+      it('of "10 to 20 teaspoon water"', () => {
+        expect(parse('10 to 20 teaspoon water').quantity).to.equal('10-20');
+      });
     });
 
     describe('of unicode fractions', () => {
@@ -137,27 +146,27 @@ describe('recipe parser', () => {
         ingredient: 'beef stew chunks (or buy a roast and chop into small cubes)'
       });
     });
-    // it('"parses ingredient with range: 1 to 2 chicken breasts"', () => {
-    //   expect(parse('1 to 2 chicken breasts')).to.deep.equal({
-    //     unit: null,
-    //     quantity: '1-2',
-    //     ingredient: 'breasts'
-    //   });
-    // });
-    // it('"parses ingredient with range: 1 - 2 chicken breasts"', () => {
-    //   expect(parse('1 - 2 chicken breasts')).to.deep.equal({
-    //     unit: null,
-    //     quantity: '1-2',
-    //     ingredient: 'breasts'
-    //   });
-    // });
-    // it('"parses ingredient with range: 1-2 chicken breasts"', () => {
-    //   expect(parse('1-2 chicken breasts')).to.deep.equal({
-    //     unit: null,
-    //     quantity: '1-2',
-    //     ingredient: 'breasts'
-    //   });
-    // });
+    it('"parses ingredient with range: 1 to 2 chicken breasts"', () => {
+      expect(parse('1 to 2 chicken breasts')).to.deep.equal({
+        unit: null,
+        quantity: '1-2',
+        ingredient: 'chicken breasts'
+      });
+    });
+    it('"parses ingredient with range: 1 - 2 chicken breasts"', () => {
+      expect(parse('1 - 2 chicken breasts')).to.deep.equal({
+        unit: null,
+        quantity: '1-2',
+        ingredient: 'chicken breasts'
+      });
+    });
+    it('"parses ingredient with range: 1-2 chicken breasts"', () => {
+      expect(parse('1-2 chicken breasts')).to.deep.equal({
+        unit: null,
+        quantity: '1-2',
+        ingredient: 'chicken breasts'
+      });
+    });
     it('"1 (16 oz) box pasta"', () => {
       expect(parse('1 (16 oz) box pasta')).to.deep.equal({
         unit: 'box',
