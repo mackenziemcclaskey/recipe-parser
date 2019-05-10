@@ -69,7 +69,9 @@ describe('recipe parser', () => {
       expect(parse('1/3 cup confectioners’ sugar')).to.deep.equal({
         quantity: '0.333',
         unit: 'cup',
-        ingredient: 'confectioners’ sugar'
+        ingredient: 'confectioners’ sugar',
+        minQty: '0.333',
+        maxQty: '0.333',
       });
     });
   });
@@ -136,49 +138,63 @@ describe('recipe parser', () => {
       expect(parse('1 (14.5 oz) can tomatoes')).to.deep.equal({
         unit: 'can',
         quantity: '1',
-        ingredient: 'tomatoes (14.5 oz)'
+        ingredient: 'tomatoes (14.5 oz)',
+        minQty: '1',
+        maxQty: '1',
       });
     });
     it('"25 lb beef stew chunks (or buy a roast and chop into small cubes)"', () => {
       expect(parse('25 lb beef stew chunks (or buy a roast and chop into small cubes)')).to.deep.equal({
         unit: 'pound',
         quantity: '25',
-        ingredient: 'beef stew chunks (or buy a roast and chop into small cubes)'
+        ingredient: 'beef stew chunks (or buy a roast and chop into small cubes)',
+        minQty: '25',
+        maxQty: '25',
       });
     });
     it('"parses ingredient with range: 1 to 2 chicken breasts"', () => {
       expect(parse('1 to 2 chicken breasts')).to.deep.equal({
         unit: null,
         quantity: '1-2',
-        ingredient: 'chicken breasts'
+        ingredient: 'chicken breasts',
+        minQty: '1',
+        maxQty: '2',
       });
     });
     it('"parses ingredient with range: 1 - 2 chicken breasts"', () => {
       expect(parse('1 - 2 chicken breasts')).to.deep.equal({
         unit: null,
         quantity: '1-2',
-        ingredient: 'chicken breasts'
+        ingredient: 'chicken breasts',
+        minQty: '1',
+        maxQty: '2',
       });
     });
     it('"parses ingredient with range: 1-2 chicken breasts"', () => {
       expect(parse('1-2 chicken breasts')).to.deep.equal({
         unit: null,
         quantity: '1-2',
-        ingredient: 'chicken breasts'
+        ingredient: 'chicken breasts',
+        minQty: '1',
+        maxQty: '2',
       });
     });
     it('"1 (16 oz) box pasta"', () => {
       expect(parse('1 (16 oz) box pasta')).to.deep.equal({
         unit: 'box',
         quantity: '1',
-        ingredient: 'pasta (16 oz)'
+        ingredient: 'pasta (16 oz)',
+        minQty: '1',
+        maxQty: '1',
       });
     });
     it('"1 slice cheese"', () => {
       expect(parse('1 slice cheese')).to.deep.equal({
         unit: 'slice',
         quantity: '1',
-        ingredient: 'cheese'
+        ingredient: 'cheese',
+        minQty: '1',
+        maxQty: '1',
       });
     });
   });
@@ -187,7 +203,9 @@ describe('recipe parser', () => {
     expect(parse('1 tortilla')).to.deep.equal({
       unit: null,
       ingredient: 'tortilla',
-      quantity: '1'
+      quantity: '1',
+      minQty: '1',
+      maxQty: '1',
     });
   });
 
@@ -195,7 +213,9 @@ describe('recipe parser', () => {
     expect(parse('powdered sugar')).to.deep.equal({
       unit: null,
       ingredient: 'powdered sugar',
-      quantity: null
+      quantity: null,
+      minQty: null,
+      maxQty: null,
     });
   });
 
@@ -299,24 +319,32 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'apples',
         quantity: '2',
-        unit: 'pound'
+        unit: 'pound',
+        minQty: '2',
+        maxQty: '2',
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'apples',
         quantity: '2',
-        unit: 'pound'
+        unit: 'pound',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       }
     ]);
   });
@@ -326,19 +354,25 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'butter',
         quantity: '4',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '4',
+        maxQty: '4',
       }
     ]);
   });
@@ -348,24 +382,32 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'butter',
         quantity: '6',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '6',
+        maxQty: '6',
       }
     ]);
   });
@@ -375,34 +417,46 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'apple',
         quantity: '2',
-        unit: 'pound'
+        unit: 'pound',
+        minQty: '2',
+        maxQty: '2',
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'apple',
         quantity: '2',
-        unit: 'pound'
+        unit: 'pound',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'butter',
         quantity: '6',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '6',
+        maxQty: '6',
       }
     ]);
   });
@@ -412,39 +466,53 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'butter',
         quantity: '1',
-        unit: 'stick'
+        unit: 'stick',
+        minQty: '1',
+        maxQty: '1',
       },
       {
         ingredient: 'apple',
         quantity: '2',
-        unit: 'pound'
+        unit: 'pound',
+        minQty: '2',
+        maxQty: '2',
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'apple',
         quantity: '2',
-        unit: 'pound'
+        unit: 'pound',
+        minQty: '2',
+        maxQty: '2',
       },
       {
         ingredient: 'butter',
         quantity: '4',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        minQty: '4',
+        maxQty: '4',
       },
       {
         ingredient: 'butter',
         quantity: '1',
-        unit: 'stick'
+        unit: 'stick',
+        minQty: '1',
+        maxQty: '1',
       }
     ]);
   });
@@ -454,19 +522,25 @@ describe('combine ingredients', () => {
       {
         ingredient: 'tortilla',
         quantity: '10',
-        unit: null
+        unit: null,
+        minQty: '10',
+        maxQty: '10',
       },
       {
         ingredient: 'tortilla',
         quantity: '5',
-        unit: null
+        unit: null,
+        minQty: '5',
+        maxQty: '5',
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'tortilla',
         quantity: '15',
-        unit: null
+        unit: null,
+        minQty: '15',
+        maxQty: '15',
       }
     ]);
   });
@@ -476,19 +550,25 @@ describe('combine ingredients', () => {
       {
         ingredient: 'Powdered Sugar',
         quantity: null,
-        unit: null
+        unit: null,
+        minQty: null,
+        maxQty: null,
       },
       {
         ingredient: 'Powdered Sugar',
         quantity: null,
-        unit: null
+        unit: null,
+        minQty: null,
+        maxQty: null,
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'Powdered Sugar',
         quantity: null,
-        unit: null
+        unit: null,
+        minQty: null,
+        maxQty: null,
       }
     ]);
   });
@@ -498,51 +578,75 @@ describe('pretty printing press', () => {
   const ingredients = [{
     ingredient: 'milk',
     unit: 'cup',
-    quantity: '1.5'
+    quantity: '1.5',
+    minQty: '1.5',
+    maxQty: '1.5',
   }, {
     ingredient: 'milk',
     unit: 'cup',
-    quantity: '0.25'
+    quantity: '0.25',
+    minQty: '0.25',
+    maxQty: '0.25',
   }, {
     ingredient: 'milk',
     unit: 'cup',
-    quantity: '1'
+    quantity: '1',
+    minQty: '1',
+    maxQty: '1',
   }, {
     ingredient: 'something',
     unit: 'box',
-    quantity: '2'
+    quantity: '2',
+    minQty: '2',
+    maxQty: '2',
   }, {
     ingredient: 'milk',
     unit: 'teaspoon',
-    quantity: '1.333'
+    quantity: '1.333',
+    minQty: '1.333',
+    maxQty: '1.333',
   }, {
     ingredient: 'milk',
     unit: 'teaspoon',
-    quantity: '1.666'
+    quantity: '1.666',
+    minQty: '1.666',
+    maxQty: '1.666',
   }, {
     ingredient: 'milk',
     unit: 'teaspoon',
-    quantity: '1.111'
+    quantity: '1.111',
+    minQty: '1.111',
+    maxQty: '1.111',
   }, {
     ingredient: 'milk',
     unit: 'teaspoon',
-    quantity: '1.166'
+    quantity: '1.166',
+    minQty: '1.166',
+    maxQty: '1.166',
   }, {
     ingredient: 'milk',
     unit: 'teaspoon',
-    quantity: '1.833'
+    quantity: '1.833',
+    minQty: '1.1833',
+    maxQty: '1.1833',
   }, {
     ingredient: 'powdered sugar',
     unit: null,
-    quantity: null
+    quantity: null,
+    minQty: null,
+    maxQty: null,
   }, {
     ingredient: 'eggs',
     unit: null,
-    quantity: '18'
+    quantity: '18',
+    minQty: '18',
+    maxQty: '18',
   }, {
     ingredient: 'large eggs',
     unit: null,
-    quantity: '18'
+    quantity: '18',
+    minQty: '18',
+    maxQty: '18',
   }];
   const expectedOutcome = [
     '1 1/2 cups milk',

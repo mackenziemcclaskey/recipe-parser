@@ -9,6 +9,8 @@ export interface Ingredient {
   ingredient: string;
   quantity: string | null;
   unit: string | null;
+  minQty: string | null;
+  maxQty: string | null;
 }
 
 function getUnit(input: string) {
@@ -37,13 +39,7 @@ export function parse(recipeString: string) {
   For example: "1 pinch salt" --> quantity: 1, restOfIngredient: pinch salt */
   let [quantity, restOfIngredient] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
-  // TODO: Handle ranges like: "2 - 4 eggs" or "2 to 4 eggs"
-  console.log("quantity:", quantity)
-  console.log("restOfIngredient:", restOfIngredient)
-
   quantity = convert.convertFromFraction(quantity);
-
-  console.log("quantity after convertFromFraction:", quantity);
 
   /* extraInfo will be any info in parantheses. We'll place it at the end of the ingredient.
   For example: "sugar (or other sweetener)" --> extraInfo: "(or other sweetener)" */
@@ -58,12 +54,20 @@ export function parse(recipeString: string) {
   // remove unit from the ingredient if one was found and trim leading and trailing whitespace
   const ingredient = !!originalUnit ? restOfIngredient.replace(originalUnit, '').trim() : restOfIngredient.replace(unit, '').trim();
 
-  // console.log("quantity before returning:", quantity);
+  let minQty = quantity; // default to quantity
+  let maxQty = quantity; // default to quantity
+
+  // if quantity is a range, for ex: "1-2", we want to get minQty and maxQty
+  if (quantity.includes('-')) {
+    [minQty, maxQty] = quantity.split('-');
+  }
 
   return {
     quantity,
     unit: !!unit ? unit : null,
-    ingredient: extraInfo ? `${ingredient} ${extraInfo}` : ingredient
+    ingredient: extraInfo ? `${ingredient} ${extraInfo}` : ingredient,
+    minQty,
+    maxQty,
   };
 }
 
@@ -133,7 +137,9 @@ function gcd(a: number, b: number): number {
 // TODO: Maybe change this to existingIngredients: Ingredient | Ingredient[]
 function combineTwoIngredients(existingIngredients: Ingredient, ingredient: Ingredient): Ingredient {
   const quantity = existingIngredients.quantity && ingredient.quantity ? (Number(existingIngredients.quantity) + Number(ingredient.quantity)).toString() : null;
-  return Object.assign({}, existingIngredients, { quantity });
+  const minQty = existingIngredients.minQty && ingredient.minQty ? (Number(existingIngredients.minQty) + Number(ingredient.minQty)).toString() : null;
+  const maxQty = existingIngredients.maxQty && ingredient.maxQty ? (Number(existingIngredients.maxQty) + Number(ingredient.maxQty)).toString() : null;
+  return Object.assign({}, existingIngredients, { quantity, minQty, maxQty });
 }
 
 function compareIngredients(a: Ingredient, b: Ingredient) {
