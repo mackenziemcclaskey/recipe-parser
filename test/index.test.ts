@@ -461,7 +461,7 @@ describe('combine ingredients', () => {
     ]);
   });
 
-  it('combines ingredients with a range', () => {
+  it('combines 2 ingredients that have a quantity range', () => {
     const ingredientArray = [
       {
         ingredient: 'butter',
@@ -485,6 +485,34 @@ describe('combine ingredients', () => {
         unit: 'tablespoon',
         minQty: '3',
         maxQty: '5',
+      }
+    ]);
+  });
+
+  it('combines 1 ingredient with no range, and 1 with a range', () => {
+    const ingredientArray = [
+      {
+        ingredient: 'butter',
+        quantity: '10',
+        unit: 'tablespoon',
+        minQty: '1',
+        maxQty: '10',
+      },
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
+      }
+    ];
+    expect(combine(ingredientArray)).to.deep.equal([
+      {
+        ingredient: 'butter',
+        quantity: '12',
+        unit: 'tablespoon',
+        minQty: '3',
+        maxQty: '12',
       }
     ]);
   });
