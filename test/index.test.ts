@@ -461,6 +461,34 @@ describe('combine ingredients', () => {
     ]);
   });
 
+  it('combines ingredients with a range', () => {
+    const ingredientArray = [
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '3',
+      },
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon',
+        minQty: '1',
+        maxQty: '2',
+      }
+    ];
+    expect(combine(ingredientArray)).to.deep.equal([
+      {
+        ingredient: 'butter',
+        quantity: '4',
+        unit: 'tablespoon',
+        minQty: '3',
+        maxQty: '5',
+      }
+    ]);
+  });
+
   it('does not combine if ingredients have different units (for now)', () => {
     const ingredientArray = [
       {
