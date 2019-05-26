@@ -57,8 +57,8 @@ export function parse(recipeString: string) {
   let minQty = quantity; // default to quantity
   let maxQty = quantity; // default to quantity
 
-  // if quantity is a range, for ex: "1-2", we want to get minQty and maxQty
-  if (quantity.includes('-')) {
+  // if quantity is non-nil and is a range, for ex: "1-2", we want to get minQty and maxQty
+  if (quantity && quantity.includes('-')) {
     [minQty, maxQty] = quantity.split('-');
   }
 
