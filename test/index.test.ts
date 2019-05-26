@@ -517,6 +517,48 @@ describe('combine ingredients', () => {
     ]);
   });
 
+  it('combines 2 ingredient with a range, and 1 different ingredient without a range', () => {
+    const ingredientArray = [
+      {
+        ingredient: 'butter',
+        quantity: '10',
+        unit: 'tablespoon',
+        minQty: '1',
+        maxQty: '10',
+      },
+      {
+        ingredient: 'butter',
+        quantity: '2',
+        unit: 'tablespoon',
+        minQty: '2',
+        maxQty: '2',
+      },
+      {
+        ingredient: 'apple',
+        quantity: '2',
+        unit: null,
+        minQty: '2',
+        maxQty: '2',
+      }
+    ];
+    expect(combine(ingredientArray)).to.deep.equal([
+      {
+        ingredient: 'apple',
+        quantity: '2',
+        unit: null,
+        minQty: '2',
+        maxQty: '2',
+      },
+      {
+        ingredient: 'butter',
+        quantity: '12',
+        unit: 'tablespoon',
+        minQty: '3',
+        maxQty: '12',
+      }
+    ]);
+  });
+
   it('does not combine if ingredients have different units (for now)', () => {
     const ingredientArray = [
       {
