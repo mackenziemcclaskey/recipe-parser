@@ -48,9 +48,13 @@ describe('recipe parser', () => {
         const element = mixedValues[u];
         const expectedAmount = (Number(mixedExpectedValues[u]) + Number(unicodeExpectedAmounts[u])).toString();
         it(`${element} to ${expectedAmount}`, () => {
-          expect(parse(`${element} teaspoon water`).quantity).to.equal(expectedAmount);
+          expect(parse(`${element} (28 ounce) teaspoon water`).quantity).to.equal(expectedAmount);
         });
       }
+
+      it('"1 ½ (28 ounce) jars pasta sauce" to 1.5', () => {
+        expect(parse('1 ½ (28 ounce) jars pasta sauce').quantity).to.equal('1.5');
+      });
     });
 
     it('doesn\'t freak out if a strange unicode character is present', () => {
