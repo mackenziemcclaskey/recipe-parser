@@ -48,7 +48,7 @@ describe('recipe parser', () => {
         const element = mixedValues[u];
         const expectedAmount = (Number(mixedExpectedValues[u]) + Number(unicodeExpectedAmounts[u])).toString();
         it(`${element} to ${expectedAmount}`, () => {
-          expect(parse(`${element} (28 ounce) teaspoon water`).quantity).to.equal(expectedAmount);
+          expect(parse(`${element} teaspoon water`).quantity).to.equal(expectedAmount);
         });
       }
 
