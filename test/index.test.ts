@@ -61,7 +61,8 @@ describe('recipe parser', () => {
       expect(parse('1/3 cup confectioners’ sugar')).to.deep.equal({
         quantity: '0.333',
         unit: 'cup',
-        ingredient: 'confectioners’ sugar'
+        ingredient: 'confectioners’ sugar',
+        container: null
       });
     });
   });
@@ -128,21 +129,25 @@ describe('recipe parser', () => {
       expect(parse('1 (14.5 oz) can tomatoes')).to.deep.equal({
         unit: 'can',
         quantity: '1',
-        ingredient: '(14.5 oz) tomatoes'
+        ingredient: 'tomatoes',
+        container: '14.5 oz'
       });
     });
     it('"1 (16 oz) box pasta"', () => {
       expect(parse('1 (16 oz) box pasta')).to.deep.equal({
         unit: 'box',
         quantity: '1',
-        ingredient: '(16 oz) pasta'
+        ingredient: 'pasta',
+        container: '16 oz'
+
       });
     });
     it('"1 slice cheese"', () => {
       expect(parse('1 slice cheese')).to.deep.equal({
         unit: 'slice',
         quantity: '1',
-        ingredient: 'cheese'
+        ingredient: 'cheese',
+        container: null
       });
     });
   });
@@ -150,6 +155,7 @@ describe('recipe parser', () => {
   it('translates unit when no unit provided', () => {
     expect(parse('1 tortilla')).to.deep.equal({
       unit: null,
+      container: null,
       ingredient: 'tortilla',
       quantity: '1'
     });
@@ -158,6 +164,7 @@ describe('recipe parser', () => {
   it('doesn\'t explode when no unit and no quantity provided', () => {
     expect(parse('powdered sugar')).to.deep.equal({
       unit: null,
+      container: null,
       ingredient: 'powdered sugar',
       quantity: null
     });
@@ -263,24 +270,28 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        container: null
       },
       {
         ingredient: 'apples',
         quantity: '2',
-        unit: 'pound'
+        unit: 'pound',
+        container: null
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'apples',
         quantity: '2',
-        unit: 'pound'
+        unit: 'pound',
+        container: null
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        container: null
       }
     ]);
   });
@@ -290,19 +301,22 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        container: null
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        container: null
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'butter',
         quantity: '4',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        container: null
       }
     ]);
   });
@@ -417,20 +431,17 @@ describe('combine ingredients', () => {
     const ingredientArray = [
       {
         ingredient: 'tortilla',
-        quantity: '10',
-        unit: null
+        quantity: '10'
       },
       {
         ingredient: 'tortilla',
-        quantity: '5',
-        unit: null
+        quantity: '5'
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'tortilla',
-        quantity: '15',
-        unit: null
+        quantity: '15'
       }
     ]);
   });
@@ -438,21 +449,16 @@ describe('combine ingredients', () => {
   it('handles the no-unit and no-quantity case', () => {
     const ingredientArray = [
       {
-        ingredient: 'Powdered Sugar',
-        quantity: null,
-        unit: null
+        ingredient: 'Powdered Sugar'
       },
       {
-        ingredient: 'Powdered Sugar',
-        quantity: null,
-        unit: null
+        ingredient: 'Powdered Sugar'
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'Powdered Sugar',
-        quantity: null,
-        unit: null
+        quantity: null
       }
     ]);
   });

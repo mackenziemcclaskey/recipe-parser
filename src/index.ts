@@ -7,8 +7,9 @@ const nounInflector = new Natural.NounInflector();
 
 export interface Ingredient {
   ingredient: string;
-  quantity: string | null;
-  unit: string | null;
+  quantity?: string | null;
+  unit?: string | null;
+  container?: string | null;
 }
 
 function getUnit(input: string) {
@@ -30,17 +31,19 @@ function getUnit(input: string) {
   return [];
 }
 
-export function parse(recipeString: string) {
+export function parse(recipeString: string): Ingredient {
   const ingredientLine = recipeString.trim();
 
-  let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
+  let [quantityStr, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
-  quantity = convert.convertFromFraction(quantity);
+  const quantity = convert.convertFromFraction(quantityStr) || null;
 
-  let extraInfo;
-  if (convert.getFirstMatch(noQuantity, /\(([^\)]+)\)/)) {
-    extraInfo = convert.getFirstMatch(noQuantity, /\(([^\)]+)\)/);
-    noQuantity = noQuantity.replace(extraInfo, '').trim();
+  let container: string | null = convert.getFirstMatch(noQuantity, /\(([^\)]+)\)/)
+  if (container) {
+    noQuantity = noQuantity.replace(container, '').trim();
+    container = container.substring(1, container.length - 1);
+  } else {
+    container = null;
   }
 
   const [unit, shorthand] = getUnit(noQuantity.split(' ')[0]) as string[];
@@ -48,8 +51,9 @@ export function parse(recipeString: string) {
 
   return {
     quantity,
-    unit: !!unit ? unit : null,
-    ingredient: extraInfo ? `${extraInfo} ${ingredient}` : ingredient
+    unit: (unit || null),
+    ingredient,
+    container
   };
 }
 
@@ -88,9 +92,9 @@ export function prettyPrintingPress(ingredient: Ingredient) {
         const len = fraction.length - 2;
         let denominator = Math.pow(10, len);
         let numerator = +fraction * denominator;
-        
+
         const divisor = gcd(numerator, denominator);
-  
+
         numerator /= divisor;
         denominator /= divisor;
         fractional = Math.floor(numerator) + '/' + Math.floor(denominator);
