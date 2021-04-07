@@ -9,7 +9,7 @@ export interface Ingredient {
   ingredient: string;
   quantity?: string | null;
   unit?: string | null;
-  container?: string | null;
+  extra?: string | null;
 }
 
 function getUnit(input: string) {
@@ -37,13 +37,28 @@ export function parse(recipeString: string): Ingredient {
   let [quantityStr, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
   const quantity = convert.convertFromFraction(quantityStr) || null;
+  noQuantity = noQuantity.trim();
 
-  let container: string | null = convert.getFirstMatch(noQuantity, /\(([^\)]+)\)/)
+  let extras: string[] = [];
+
+  let container: string | null = convert.getFirstMatch(noQuantity, /^\(([^\)]+)\)/)
   if (container) {
     noQuantity = noQuantity.replace(container, '').trim();
-    container = container.substring(1, container.length - 1);
-  } else {
-    container = null;
+    container = container.substring(1, container.length - 1).trim();
+    extras = [...extras, container]
+  }
+
+  const commaIndex = noQuantity.indexOf(',');
+  const bracketIndex = noQuantity.indexOf('(');
+  if (commaIndex >= 0 && (bracketIndex < 0 || commaIndex < bracketIndex)) {
+    extras = [...extras, noQuantity.substring(commaIndex + 1).trim()];
+    noQuantity = noQuantity.substring(0, commaIndex);
+  }
+  if (bracketIndex >= 0 && (commaIndex < 0 || bracketIndex < commaIndex)) {
+    let bracketContent = convert.getFirstMatch(noQuantity, /\(([^\)]+)\)/);
+    bracketContent = bracketContent.substring(1, bracketContent.length - 1).trim();
+    extras = [...extras, bracketContent];
+    noQuantity = noQuantity.substring(0, bracketIndex).trim();
   }
 
   const [unit, shorthand] = getUnit(noQuantity.split(' ')[0]) as string[];
@@ -53,7 +68,7 @@ export function parse(recipeString: string): Ingredient {
     quantity,
     unit: (unit || null),
     ingredient,
-    container
+    extra: (extras.length > 0 ? extras.join(', ') : null)
   };
 }
 
