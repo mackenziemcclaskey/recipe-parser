@@ -51,13 +51,18 @@ describe('recipe parser', () => {
           expect(parse(`${element} teaspoon water`).quantity).to.equal(expectedAmount);
         });
       }
+
+      it('"1 ½ (28 ounce) jars pasta sauce" to 1.5', () => {
+        expect(parse('1 ½ (28 ounce) jars pasta sauce').quantity).to.equal('1.5');
+      });
     });
 
     it('doesn\'t freak out if a strange unicode character is present', () => {
       expect(parse('1/3 cup confectioners’ sugar')).to.deep.equal({
         quantity: '0.333',
         unit: 'cup',
-        ingredient: 'confectioners’ sugar'
+        ingredient: 'confectioners’ sugar',
+        extra: null
       });
     });
   });
@@ -124,21 +129,48 @@ describe('recipe parser', () => {
       expect(parse('1 (14.5 oz) can tomatoes')).to.deep.equal({
         unit: 'can',
         quantity: '1',
-        ingredient: '(14.5 oz) tomatoes'
+        ingredient: 'tomatoes',
+        extra: '14.5 oz'
       });
     });
     it('"1 (16 oz) box pasta"', () => {
       expect(parse('1 (16 oz) box pasta')).to.deep.equal({
         unit: 'box',
         quantity: '1',
-        ingredient: '(16 oz) pasta'
+        ingredient: 'pasta',
+        extra: '16 oz'
+      });
+    });
+    it('"4 eggs, lightly beaten"', () => {
+      expect(parse('4 eggs, lightly beaten')).to.deep.equal({
+        unit: null,
+        quantity: '4',
+        ingredient: 'eggs',
+        extra: 'lightly beaten'
+      });
+    });
+    it('"1 (4 ounce) can sliced mushrooms, drained (Optional)"', () => {
+      expect(parse('1 (4 ounce) can sliced mushrooms, drained (Optional)')).to.deep.equal({
+        unit: 'can',
+        quantity: '1',
+        ingredient: 'sliced mushrooms',
+        extra: '4 ounce, drained (Optional)'
+      });
+    });
+    it('"1 (.25 ounce) active dry yeast (such as Fleischmann\'s ActiveDry Yeast®, or any other)"', () => {
+      expect(parse('1 (.25 ounce) active dry yeast (such as Fleischmann\'s ActiveDry Yeast®, or any other)')).to.deep.equal({
+        unit: null,
+        quantity: '1',
+        ingredient: 'active dry yeast',
+        extra: '.25 ounce, such as Fleischmann\'s ActiveDry Yeast®, or any other'
       });
     });
     it('"1 slice cheese"', () => {
       expect(parse('1 slice cheese')).to.deep.equal({
         unit: 'slice',
         quantity: '1',
-        ingredient: 'cheese'
+        ingredient: 'cheese',
+        extra: null
       });
     });
   });
@@ -146,6 +178,7 @@ describe('recipe parser', () => {
   it('translates unit when no unit provided', () => {
     expect(parse('1 tortilla')).to.deep.equal({
       unit: null,
+      extra: null,
       ingredient: 'tortilla',
       quantity: '1'
     });
@@ -154,6 +187,7 @@ describe('recipe parser', () => {
   it('doesn\'t explode when no unit and no quantity provided', () => {
     expect(parse('powdered sugar')).to.deep.equal({
       unit: null,
+      extra: null,
       ingredient: 'powdered sugar',
       quantity: null
     });
@@ -259,24 +293,28 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        extra: null
       },
       {
         ingredient: 'apples',
         quantity: '2',
-        unit: 'pound'
+        unit: 'pound',
+        extra: null
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'apples',
         quantity: '2',
-        unit: 'pound'
+        unit: 'pound',
+        extra: null
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        extra: null
       }
     ]);
   });
@@ -286,19 +324,22 @@ describe('combine ingredients', () => {
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        extra: null
       },
       {
         ingredient: 'butter',
         quantity: '2',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        extra: null
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'butter',
         quantity: '4',
-        unit: 'tablespoon'
+        unit: 'tablespoon',
+        extra: null
       }
     ]);
   });
@@ -413,20 +454,17 @@ describe('combine ingredients', () => {
     const ingredientArray = [
       {
         ingredient: 'tortilla',
-        quantity: '10',
-        unit: null
+        quantity: '10'
       },
       {
         ingredient: 'tortilla',
-        quantity: '5',
-        unit: null
+        quantity: '5'
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'tortilla',
-        quantity: '15',
-        unit: null
+        quantity: '15'
       }
     ]);
   });
@@ -434,21 +472,16 @@ describe('combine ingredients', () => {
   it('handles the no-unit and no-quantity case', () => {
     const ingredientArray = [
       {
-        ingredient: 'Powdered Sugar',
-        quantity: null,
-        unit: null
+        ingredient: 'Powdered Sugar'
       },
       {
-        ingredient: 'Powdered Sugar',
-        quantity: null,
-        unit: null
+        ingredient: 'Powdered Sugar'
       }
     ];
     expect(combine(ingredientArray)).to.deep.equal([
       {
         ingredient: 'Powdered Sugar',
-        quantity: null,
-        unit: null
+        quantity: null
       }
     ]);
   });

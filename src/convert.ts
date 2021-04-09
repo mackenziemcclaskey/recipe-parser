@@ -42,7 +42,7 @@ const unicodeObj: { [key: string]: string } = {
 
 export function findQuantityAndConvertIfUnicode(ingredientLine: string) {
   const numericAndFractionRegex = /^(\d+\/\d+)|(\d+\s\d+\/\d+)|(\d+\-\d+)|(\d+.\d+)|\d+/g;
-  const unicodeFractionRegex = /\d*[^\u0000-\u007F]+/g;
+  const unicodeFractionRegex = /\d*\s*[^\u0000-\u007F]+/g;
   const onlyUnicodeFraction = /[^\u0000-\u007F]+/g;
 
   if (ingredientLine.match(unicodeFractionRegex)) {
