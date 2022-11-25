@@ -5,15 +5,26 @@ export const units = {
   pint: ['pt', 'pts', 'pt.'],
   pound: ['lb', 'lb.', 'lbs'],
   quart: ['qt', 'qt.', 'qts'],
-  tablespoon: ['tbs', 'tbsp', 'tbspn', 'T', 'T.', 'Tablespoons', 'Tablespoon'],
-  teaspoon: ['tsp', 'tspn', 't', 't.'],
+  tablespoon: [
+    'tbs',
+    'tbs.',
+    'tbsp',
+    'tbsp.',
+    'tbspn',
+    'tbspn.',
+    'T',
+    'T.',
+    'Tablespoons',
+    'Tablespoon',
+  ],
+  teaspoon: ['tsp', 'tsp.', 'tspn', 'tspn.', 't', 't.'],
   gram: ['g', 'g.'],
   kilogram: ['kg', 'kg.'],
   liter: ['l', 'l.'],
   milligram: ['mg', 'mg.'],
   milliliter: ['ml', 'ml.'],
-  package: ['pkg', 'pkgs'],
-  stick: ['sticks']
+  package: ['pkg', 'pkg.', 'pkgs'],
+  stick: ['sticks'],
 } as { [key: string]: string[] };
 
 export const pluralUnits = {
@@ -35,5 +46,5 @@ export const pluralUnits = {
   box: 'boxes',
   pinch: 'pinches',
   can: 'cans',
-  slice: 'slices'
+  slice: 'slices',
 } as { [key: string]: string };
