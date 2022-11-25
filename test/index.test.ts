@@ -193,8 +193,6 @@ describe('recipe parser', () => {
       expect(parse('1 quarts water').unit).to.equal('quart');
     });
     it('"1 tablespoon water"', () => {
-      expect(parse('1 T water').unit).to.equal('tablespoon');
-      expect(parse('1 T. water').unit).to.equal('tablespoon');
       expect(parse('1 tbs water').unit).to.equal('tablespoon');
       expect(parse('1 tbsp water').unit).to.equal('tablespoon');
       expect(parse('1 tbspn water').unit).to.equal('tablespoon');
@@ -205,8 +203,6 @@ describe('recipe parser', () => {
     it('"1 teaspoon water"', () => {
       expect(parse('1 tsp water').unit).to.equal('teaspoon');
       expect(parse('1 tspn water').unit).to.equal('teaspoon');
-      expect(parse('1 t water').unit).to.equal('teaspoon');
-      expect(parse('1 t. water').unit).to.equal('teaspoon');
       expect(parse('2 teaspoons water').unit).to.equal('teaspoon');
     });
     it('"1 gram water"', () => {
