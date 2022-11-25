@@ -31,7 +31,7 @@ function getUnit(input: string) {
 }
 
 export function parse(recipeString: string) {
-  const ingredientLine = recipeString.trim();
+  const ingredientLine = recipeString.trim().toLowerCase();
 
   let [quantity, noQuantity] = convert.findQuantityAndConvertIfUnicode(ingredientLine) as string[];
 
